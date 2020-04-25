@@ -1,32 +1,67 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <!-- drawer disponivel em todas as telas menos login -->
+    <v-navigation-drawer v-if="$router.currentRoute.name != 'Login'" v-model="drawer" app clipped>
+      <v-list nav>
+        <v-list-item to="/dash">
+          <v-list-item-content>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item to="/users">
+          <v-list-item-content>
+            <v-list-item-title>Usuarios</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+      <v-footer fixed bottom class="pa-0" color="primary">
+        <v-btn text color="white" block>Logout</v-btn>
+      </v-footer>
+    </v-navigation-drawer>
+    <!-- appbar disponivel em todas as telas menos login -->
+    <v-app-bar v-if="$router.currentRoute.name != 'Login'" app clipped-left elevation="1">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title class="align-center">
+        <span class="headline">Nome do Projeto</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-title class="align-center">
+        <span class="headline">{{$router.currentRoute.name}}</span>
+      </v-toolbar-title>
+    </v-app-bar>
+    <!-- conteudo do app -->
+    <v-content>
+      <v-container fluid>
+        <router-view />
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
+<script>
+import Login from "./views/Login";
+import Dash from "./views/Dash";
+export default {
+  name: "App",
+  components: {
+    Login,
+    Dash
+  },
+  data: () => ({
+    drawer: true
+  })
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
 }
-
-#nav {
-  padding: 30px;
+::-webkit-scrollbar {
+  width: 5px;
+  background: #f4f4f4;
 }
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+::-webkit-scrollbar-thumb {
+  background: #dad7d7;
 }
 </style>
