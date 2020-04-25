@@ -15,7 +15,7 @@
         </v-list-item>
       </v-list>
       <v-footer fixed bottom class="pa-0" color="primary">
-        <v-btn text color="white" block>Logout</v-btn>
+        <v-btn text color="white" block @click="logout">Logout</v-btn>
       </v-footer>
     </v-navigation-drawer>
     <!-- appbar disponivel em todas as telas menos login -->
@@ -49,7 +49,12 @@ export default {
   },
   data: () => ({
     drawer: true
-  })
+  }),
+  methods: {
+    logout() {
+      this.$router.push("/");
+    }
+  }
 };
 </script>
 
