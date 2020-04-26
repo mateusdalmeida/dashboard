@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Dash from '../views/Dash.vue'
 import Users from '../views/Users.vue'
+import Generic from '../views/Generic.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/users',
     name: 'Usuarios',
     component: Users
+  },
+  {
+    path: '/generic',
+    name: 'Generica',
+    component: Generic
   },
 ]
 

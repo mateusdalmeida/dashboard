@@ -13,6 +13,11 @@
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item to="/generic">
+          <v-list-item-content>
+            <v-list-item-title>Generica</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
       <v-footer fixed bottom class="pa-0" color="primary">
         <v-btn text color="white" block @click="logout">Logout</v-btn>
