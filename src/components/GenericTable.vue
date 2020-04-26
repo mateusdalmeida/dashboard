@@ -1,5 +1,9 @@
 <template>
   <v-card>
+    <v-row justify="space-around">
+      <v-checkbox v-for="header in headers" :key="header.text" :value="header.text" 
+        :label="header.text" v-model="headersShown"></v-checkbox>
+    </v-row>
     <v-card-title>
       {{tableName ? tableName : routeName}}
       <v-spacer></v-spacer>
@@ -11,7 +15,7 @@
         hide-details
       ></v-text-field>
     </v-card-title>
-    <v-data-table :headers="headers" :items="items" :search="search"></v-data-table>
+    <v-data-table :headers="headersSelected" :items="items" :search="search"></v-data-table>
   </v-card>
 </template>
 <script>
@@ -21,6 +25,8 @@ export default {
   data: () => ({
     routeName: "",
     search: "",
+    headersShown: [],
+    headersAux: [],
     headers: [
       {
         text: "Dessert (100g serving)",
@@ -40,6 +46,15 @@ export default {
       }
     ]
   }),
+  computed: {
+    headersSelected: function () {
+      // um computed que monitora quais colunas devem ser
+      // exibidas de acordo com o valor do array headersShow
+      return this.headers.filter(header=>{
+        return this.headersShown.includes(header.text)
+      })
+    }
+  },
   created() {
     // obtem o nome da rota atual para colocar no titulo
     // da tabela, caso nenhum titulo seja dado
@@ -47,8 +62,12 @@ export default {
     // converte as keys do primeiro objeto para
     // virarem os headers da tabela
     this.headers = Object.keys(this.tableData[0]).map(key => {
+      // adiciona o item no array headersShow, responsavel
+      // pelo menu de selecao do que aparece nos headers
+      this.headersShown.push(key)
       return { text: key, value: key };
     });
+    this.headersAux = this.headers
     // captura os items e coloca na tabela
     this.items = this.tableData;
   }
