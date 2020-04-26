@@ -1,6 +1,10 @@
 <template>
-  <v-row justify="center">
-    <v-col md="5" align-self="center">
+  <v-row justify="center" height="100%" align="center" align-self="center">
+    <v-col align="center" align-self="center" cols="12" xs="12" sm md="5">
+      <img src="..\assets\logo.png" />
+    </v-col>
+
+    <v-col cols="12" xs="12" sm md="5">
       <h2 class="mb-4">Login</h2>
       <v-form ref="form">
         <v-text-field
@@ -9,7 +13,7 @@
           label="Email"
           required
           :disabled="loading"
-          outlined
+          solo
           rounded
         ></v-text-field>
         <v-text-field
@@ -18,7 +22,7 @@
           :disabled="loading"
           label="Senha"
           required
-          outlined
+          solo
           rounded
         ></v-text-field>
         <span v-if="errorMessage">{{errorMessage}}</span>
