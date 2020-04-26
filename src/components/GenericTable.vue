@@ -1,9 +1,16 @@
 <template>
   <v-card>
-    <v-row justify="space-around">
-      <v-checkbox v-for="header in headers" :key="header.text" :value="header.text" 
-        :label="header.text" v-model="headersShown"></v-checkbox>
-    </v-row>
+    <v-container>
+      <v-autocomplete
+          v-model="headersShown"
+          :items="headers"
+          label="Selecionar colunas para visualizar"
+          multiple
+          chips
+          item-text="text"
+          item-value="text"
+        ></v-autocomplete>
+    </v-container>
     <v-card-title>
       {{tableName ? tableName : routeName}}
       <v-spacer></v-spacer>
