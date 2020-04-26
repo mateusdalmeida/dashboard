@@ -20,7 +20,7 @@ export default {
     this.isLoading = true;
     // simula uma requisicao para o servidor e em seguida
     // preenche os dados do genericData
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 500));
     this.genericData = [
       {
         name: "Anderson Guerra",
