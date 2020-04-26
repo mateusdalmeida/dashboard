@@ -31,7 +31,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title class="align-center">
-        <span class="headline">{{$router.currentRoute.name}}</span>
+        <span class="display-1">{{$router.currentRoute.name}}</span>
       </v-toolbar-title>
     </v-app-bar>
     <!-- conteudo do app -->

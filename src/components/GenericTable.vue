@@ -1,26 +1,29 @@
 <template>
   <v-card>
-    <v-container>
-      <v-autocomplete
-          v-model="headersShown"
-          :items="headers"
-          label="Selecionar colunas para visualizar"
-          multiple
-          chips
-          item-text="text"
-          item-value="text"
-        ></v-autocomplete>
-    </v-container>
-    <v-card-title>
-      {{tableName ? tableName : routeName}}
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Pesquisar"
-        single-line
-        hide-details
-      ></v-text-field>
+    <v-card-title class="pt-0 pb-0">
+      <v-row>
+        <v-col>
+          <v-autocomplete
+            v-model="headersShown"
+            :items="headers"
+            label="Selecionar colunas para visualizar"
+            multiple
+            chips
+            small-chips
+            item-text="text"
+            item-value="text"
+          ></v-autocomplete>
+        </v-col>
+        <v-col>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Pesquisar"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-data-table :headers="headersSelected" :items="items" :search="search"></v-data-table>
   </v-card>
@@ -54,12 +57,12 @@ export default {
     ]
   }),
   computed: {
-    headersSelected: function () {
+    headersSelected: function() {
       // um computed que monitora quais colunas devem ser
       // exibidas de acordo com o valor do array headersShow
-      return this.headers.filter(header=>{
-        return this.headersShown.includes(header.text)
-      })
+      return this.headers.filter(header => {
+        return this.headersShown.includes(header.text);
+      });
     }
   },
   created() {
@@ -71,10 +74,10 @@ export default {
     this.headers = Object.keys(this.tableData[0]).map(key => {
       // adiciona o item no array headersShow, responsavel
       // pelo menu de selecao do que aparece nos headers
-      this.headersShown.push(key)
+      this.headersShown.push(key);
       return { text: key, value: key };
     });
-    this.headersAux = this.headers
+    this.headersAux = this.headers;
     // captura os items e coloca na tabela
     this.items = this.tableData;
   }
