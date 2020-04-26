@@ -3,6 +3,7 @@
     <div>Usuarios</div>
     <generic-table v-if="genericData.length > 0" :tableData="genericData" />
     <Loading-data v-if="isLoading" />
+    <p v-if="genericData.length == 0 && isLoading == false" >Sem dados para mostrar no momento</p>
   </div>
 </template>
 
