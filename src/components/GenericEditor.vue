@@ -2,7 +2,10 @@
   <div class="text-center">
     <v-dialog v-model="isDialogOpen" persistent>
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Criar/Editar</v-card-title>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >Criar/Editar {{$router.currentRoute.name}}</v-card-title>
 
         <v-container fluid>
           <div v-for="(fieldType, fieldName) in model" :key="fieldName">
@@ -42,14 +45,17 @@
             ></v-checkbox>
           </div>
         </v-container>
-
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="$emit('close-dialog')">Cancelar</v-btn>
+          <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
           <!-- esse botao vai realizar outro emit, mas é coisa mais pra frente -->
-          <v-btn color="primary" text @click="$emit('close-dialog')">Cadastrar/Atualizar</v-btn>
+          <v-btn color="primary" text @click="$emit('close-dialog')" :loading="loading">
+            Cadastrar/Atualizar
+            <template v-slot:loader>
+              <v-progress-circular indeterminate></v-progress-circular>
+            </template>
+          </v-btn>
         </v-card-actions>
         {{modelAnswers}}
       </v-card>
@@ -61,6 +67,7 @@ export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model"],
   data: () => ({
+    loading: false,
     datePickerMenu: false,
     modelAnswers: {}
   })
