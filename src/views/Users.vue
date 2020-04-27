@@ -1,19 +1,28 @@
 <template>
   <div>
     <div>Usuarios</div>
+    <v-btn @click="editorDialog = true">criar</v-btn>
     <generic-table v-if="genericData.length > 0" :tableData="genericData" />
     <Loading-data v-if="isLoading" />
-    <p v-if="genericData.length == 0 && isLoading == false" >Sem dados para mostrar no momento</p>
+    <p v-if="genericData.length == 0 && isLoading == false">Sem dados para mostrar no momento</p>
+    <generic-editor
+      v-if="editorDialog"
+      :isDialogOpen="editorDialog"
+      :model="require('@/models/user')"
+      @close-dialog="editorDialog = false"
+    />
   </div>
 </template>
 
 <script>
 import GenericTable from "@/components/GenericTable";
+import GenericEditor from "@/components/GenericEditor";
 import LoadingData from "@/components/LoadingData";
 export default {
-  components: { GenericTable, LoadingData },
+  components: { GenericTable, LoadingData, GenericEditor },
   name: "Usuarios",
   data: () => ({
+    editorDialog: false,
     isLoading: false,
     genericData: []
   }),

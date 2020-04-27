@@ -1,4 +1,5 @@
 # dashboard
+A project made with vue.js aiming to achieve simple yet useful dashboard that can be used in many scenarios
 
 ## Project setup
 ```
@@ -14,6 +15,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
