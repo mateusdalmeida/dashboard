@@ -57,7 +57,6 @@
             </template>
           </v-btn>
         </v-card-actions>
-        {{modelAnswers}}
       </v-card>
     </v-dialog>
   </div>
