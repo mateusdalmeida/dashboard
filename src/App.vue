@@ -13,11 +13,6 @@
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/generic">
-          <v-list-item-content>
-            <v-list-item-title>Generica</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
         <div v-for="module in modulesShown" :key="module.to.path">
           <v-list-item :to="module.to">
             <v-list-item-content>
