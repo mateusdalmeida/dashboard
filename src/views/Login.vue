@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center" height="100%" align="center" align-self="center">
     <v-col align="center" align-self="center" cols="12" xs="12" sm md="5">
-      <img :src="require('@/assets/logo.png')" />
+      <img :src="$project_data.LOGO" />
     </v-col>
 
     <v-col cols="12" xs="12" sm md="5">

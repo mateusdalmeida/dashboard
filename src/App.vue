@@ -27,7 +27,8 @@
     <v-app-bar v-if="$router.currentRoute.name != 'Login'" app clipped-left elevation="1">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="align-center">
-        <span class="headline">Nome do Projeto</span>
+        <span class="headline">{{$project_data.NAME}}</span>
+        <!-- {{$project_data.MODULES}} -->
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title class="align-center">
