@@ -72,12 +72,14 @@ export default {
   },
   created() {
     Object.entries(modules).forEach(module => {
-      let moduleName = `${module[0].charAt(0).toUpperCase() +
-        module[0].slice(1)}`;
-      this.modulesShown.push({
-        to: { name: moduleName },
-        title: moduleName
-      });
+      if (module[1].auto_import) {
+        let moduleName = `${module[0].charAt(0).toUpperCase() +
+          module[0].slice(1)}`;
+        this.modulesShown.push({
+          to: { name: moduleName },
+          title: moduleName
+        });
+      }
     });
   }
 };

@@ -8,7 +8,7 @@
     <generic-editor
       v-if="editorDialog"
       :isDialogOpen="editorDialog"
-      :model="require('@/models/user')"
+      :model="userModel"
       @close-dialog="editorDialog = false"
     />
   </div>
@@ -18,11 +18,14 @@
 import GenericTable from "@/components/GenericTable";
 import GenericEditor from "@/components/GenericEditor";
 import LoadingData from "@/components/LoadingData";
+import modules from "@/config/modules";
+
 export default {
   components: { GenericTable, LoadingData, GenericEditor },
   name: "Usuarios",
   data: () => ({
     editorDialog: false,
+    userModel: modules.users.model,
     isLoading: false,
     genericData: []
   }),
