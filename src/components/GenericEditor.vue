@@ -50,7 +50,7 @@
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
           <!-- esse botao vai realizar outro emit, mas é coisa mais pra frente -->
-          <v-btn color="primary" text @click="$emit('close-dialog')" :loading="loading">
+          <v-btn color="primary" text @click="createOrUpdate" :loading="loading">
             Cadastrar/Atualizar
             <template v-slot:loader>
               <v-progress-circular indeterminate></v-progress-circular>
@@ -69,6 +69,22 @@ export default {
     loading: false,
     datePickerMenu: false,
     modelAnswers: {}
-  })
+  }),
+  methods: {
+    async createOrUpdate() {
+      let apiUrl;
+      if (this.$router.currentRoute.meta) {
+        apiUrl = this.$router.currentRoute.meta.apiUrl;
+      } else {
+        apiUrl = "/algumaUrl";
+      }
+
+      let result = await this.$http.post(apiUrl, this.modelAnswers);
+      if (result.status == 201) {
+        // requisicao conseguiu cadastrar com sucesso, entao pode sair
+        this.$emit("close-dialog", true);
+      }
+    }
+  }
 };
 </script>

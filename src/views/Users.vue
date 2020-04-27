@@ -30,6 +30,9 @@ export default {
     genericData: []
   }),
   async created() {
+    let result = await this.$http.get("/blog");
+    console.log(result.data);
+
     this.isLoading = true;
     // simula uma requisicao para o servidor e em seguida
     // preenche os dados do genericData

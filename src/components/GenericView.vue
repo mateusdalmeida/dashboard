@@ -8,7 +8,7 @@
       v-if="editorDialog"
       :isDialogOpen="editorDialog"
       :model="editorModel"
-      @close-dialog="editorDialog = false"
+      @close-dialog="closeDialog"
     />
   </div>
 </template>
@@ -27,32 +27,32 @@ export default {
     isLoading: false,
     genericData: []
   }),
+  methods: {
+    async closeDialog(reload) {
+      this.editorDialog = false;
+      if (reload) {
+        await this.requestData();
+      }
+    },
+    async requestData() {
+      this.isLoading = true;
+      // configura a url do modulo para acessar a api
+      let apiUrl = this.$router.currentRoute.meta.apiUrl;
+      // simula uma requisicao para o servidor e em seguida
+      // preenche os dados do genericData
+      let result = await this.$http.get(apiUrl);
+      if (result.status == 200) {
+        this.genericData = result.data;
+      }
+      this.isLoading = false;
+    }
+  },
   async created() {
+    // captura os dados do modulo
     if (this.$router.currentRoute.meta) {
       this.editorModel = this.$router.currentRoute.meta.model;
     }
-
-    this.isLoading = true;
-    // simula uma requisicao para o servidor e em seguida
-    // preenche os dados do genericData
-    await new Promise(resolve => setTimeout(resolve, 500));
-    this.genericData = [
-      {
-        title: "blog tope",
-        text: "pipipi popopo",
-        author: "Anderson Guerra",
-        updated_at: "28/05/1996",
-        created_at: "28/05/1996"
-      },
-      {
-        title: "coisas da google",
-        text: "ai pq o firebase nhenhenhe",
-        author: "Mateus D'Almeida",
-        updated_at: "29/02/1996",
-        created_at: "29/02/1996"
-      }
-    ];
-    this.isLoading = false;
+    await this.requestData();
   }
 };
 </script>

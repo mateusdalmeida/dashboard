@@ -25,7 +25,7 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-data-table :headers="headersSelected" :items="items" :search="search"></v-data-table>
+    <v-data-table :headers="headersSelected" :items="tableData" :search="search"></v-data-table>
   </v-card>
 </template>
 <script>
@@ -43,16 +43,6 @@ export default {
         align: "start",
         sortable: false,
         value: "name"
-      }
-    ],
-    items: [
-      {
-        name: "KitKat",
-        calories: 518,
-        fat: 26.0,
-        carbs: 65,
-        protein: 7,
-        iron: "6%"
       }
     ]
   }),
@@ -78,8 +68,6 @@ export default {
       return { text: key, value: key };
     });
     this.headersAux = this.headers;
-    // captura os items e coloca na tabela
-    this.items = this.tableData;
   }
 };
 </script>

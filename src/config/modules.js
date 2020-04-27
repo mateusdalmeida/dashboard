@@ -2,7 +2,7 @@ import { fields, modules_types } from "@/config/consts"
 
 export default {
     blog: {
-        apiUrl: '/blog/etcetc',
+        apiUrl: '/blog',
         modules_types: modules_types.CRUD,
         auto_import: true,
         model: {

@@ -1,6 +1,9 @@
+const axios = require('axios')
+
 export default {
     install(Vue) {
         Vue.prototype.$project_data = project_data
+        Vue.prototype.$http = http
     }
 }
 
@@ -21,3 +24,10 @@ var firebase_config = {
 var feathers_config = {
     //não sei o que precisa aqui
 }
+
+// axios configuration
+const http = axios.create({
+    baseURL: 'http://localhost:3000',
+    timeout: 1000
+
+});
