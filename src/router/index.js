@@ -6,7 +6,7 @@ import Users from '../views/Users.vue'
 import Generic from '../views/Generic.vue'
 import GenericView from '@/components/GenericView'
 
-import modules from "@/modules"
+import modules from "@/config/modules"
 
 Vue.use(VueRouter)
 

@@ -54,7 +54,7 @@
 <script>
 import Login from "./views/Login";
 import Dash from "./views/Dash";
-import modules from "@/modules";
+import modules from "@/config/modules";
 export default {
   name: "App",
   components: {
