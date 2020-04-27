@@ -18,6 +18,13 @@
             <v-list-item-title>Generica</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <div v-for="module in modulesShown" :key="module.to.path">
+          <v-list-item :to="module.to">
+            <v-list-item-content>
+              <v-list-item-title>{{module.title}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
       </v-list>
       <v-footer fixed bottom class="pa-0" color="primary">
         <v-btn text color="white" block @click="logout">Logout</v-btn>
@@ -47,6 +54,7 @@
 <script>
 import Login from "./views/Login";
 import Dash from "./views/Dash";
+import modules from "@/modules";
 export default {
   name: "App",
   components: {
@@ -54,12 +62,23 @@ export default {
     Dash
   },
   data: () => ({
-    drawer: true
+    drawer: true,
+    modulesShown: []
   }),
   methods: {
     logout() {
       this.$router.push("/");
     }
+  },
+  created() {
+    Object.entries(modules).forEach(module => {
+      let moduleName = `${module[0].charAt(0).toUpperCase() +
+        module[0].slice(1)}`;
+      this.modulesShown.push({
+        to: { name: moduleName },
+        title: moduleName
+      });
+    });
   }
 };
 </script>

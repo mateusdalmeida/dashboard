@@ -38,7 +38,8 @@ var feathers_config = {
 
 //acho que dá pra separar isso depois
 //only-read
-var fields = {
+
+export const fields = {
     STRING: "string",
     DATE: "date",
     BOOLEAN: "boolean"
