@@ -3,7 +3,8 @@
 export const fields = {
     STRING: "string",
     DATE: "date",
-    BOOLEAN: "boolean"
+    BOOLEAN: "boolean",
+    RADIO_BTN: "radio_btn"
 }
 
 export const modules_types = {

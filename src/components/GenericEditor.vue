@@ -9,9 +9,10 @@
               <v-col
                 cols="12"
                 sm="12"
-                md="4"
+                :md="fieldType['type']=='radio_btn' ? '12' : '4'"
                 v-for="(fieldType, fieldName) in model"
                 :key="fieldName"
+                :order=" fieldType['type']=='radio_btn' ? 'last' : '' "
               >
                 <v-text-field
                   v-if="fieldType=='string'"
@@ -48,6 +49,12 @@
                   :label="fieldName"
                   v-model="modelAnswers[fieldName]"
                 ></v-checkbox>
+                <div v-if="fieldType['type']=='radio_btn'">
+                  {{fieldName}}
+                  <v-radio-group v-model="modelAnswers[fieldName]" row name="asfsf">
+                    <v-radio v-for="n in fieldType['items']" :key="n" :label="n" :value="n"></v-radio>
+                  </v-radio-group>
+                </div>
               </v-col>
             </v-row>
           </v-form>

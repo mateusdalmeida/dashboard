@@ -8,6 +8,13 @@ export default {
         model: {
             title: fields.STRING,
             text: fields.STRING,
+            tag: {
+                type: fields.RADIO_BTN,
+                items: [
+                    "games",
+                    "news"
+                ]
+            }
         }
     },
     users: {
@@ -18,7 +25,7 @@ export default {
             email: fields.STRING,
             nacionatity: fields.STRING,
             birthday: fields.DATE,
-            type: fields.BOOLEAN
+            type: fields.BOOLEAN,
         }
     }
 }
