@@ -64,7 +64,7 @@
 <script>
 export default {
   name: "GenericEditor",
-  props: ["isDialogOpen", "model"],
+  props: ["isDialogOpen", "model", "apiUrlManual"],
   data: () => ({
     loading: false,
     datePickerMenu: false,
@@ -73,12 +73,11 @@ export default {
   methods: {
     async createOrUpdate() {
       let apiUrl;
-      if (this.$router.currentRoute.meta) {
+      if (this.$router.currentRoute.meta.apiUrl) {
         apiUrl = this.$router.currentRoute.meta.apiUrl;
       } else {
-        apiUrl = "/algumaUrl";
+        apiUrl = this.apiUrlManual;
       }
-
       let result = await this.$http.post(apiUrl, this.modelAnswers);
       if (result.status == 201) {
         // requisicao conseguiu cadastrar com sucesso, entao pode sair

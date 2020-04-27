@@ -1,0 +1,29 @@
+{
+  "blog": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "text": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "l",
+      "email": "l",
+      "nacionatity": "l",
+      "birthday": "2020-04-02",
+      "type": true
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

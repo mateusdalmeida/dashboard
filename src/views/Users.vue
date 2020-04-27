@@ -7,9 +7,10 @@
     <p v-if="genericData.length == 0 && isLoading == false">Sem dados para mostrar no momento</p>
     <generic-editor
       v-if="editorDialog"
+      apiUrlManual="/users"
       :isDialogOpen="editorDialog"
       :model="userModel"
-      @close-dialog="editorDialog = false"
+      @close-dialog="closeDialog"
     />
   </div>
 </template>
@@ -29,31 +30,34 @@ export default {
     isLoading: false,
     genericData: []
   }),
-  async created() {
-    let result = await this.$http.get("/blog");
-    console.log(result.data);
+  methods: {
+    async closeDialog(reload) {
+      this.editorDialog = false;
+      if (reload) {
+        console.log("nice");
 
-    this.isLoading = true;
-    // simula uma requisicao para o servidor e em seguida
-    // preenche os dados do genericData
-    await new Promise(resolve => setTimeout(resolve, 500));
-    this.genericData = [
-      {
-        name: "Anderson Guerra",
-        email: "and.guerra@outlook.com",
-        nacionatity: "Brasileiro",
-        birthday: "28/05/1996",
-        type: "admin?"
-      },
-      {
-        name: "Mateus D'Almeida",
-        email: "dalmeidinha@gmail.com",
-        nacionatity: "Colombiano",
-        birthday: "29/02/1996",
-        type: "admin"
+        await this.requestData();
       }
-    ];
-    this.isLoading = false;
+    },
+    async requestData() {
+      this.isLoading = true;
+      // configura a url do modulo para acessar a api
+      let apiUrl = "/users";
+      // simula uma requisicao para o servidor e em seguida
+      // preenche os dados do genericData
+      let result = await this.$http.get(apiUrl);
+      if (result.status == 200) {
+        this.genericData = result.data;
+      }
+      this.isLoading = false;
+    }
+  },
+  async created() {
+    // captura os dados do modulo
+    if (this.$router.currentRoute.meta.model) {
+      this.editorModel = this.$router.currentRoute.meta.model;
+    }
+    await this.requestData();
   }
 };
 </script>

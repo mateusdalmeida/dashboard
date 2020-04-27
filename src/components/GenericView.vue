@@ -49,7 +49,7 @@ export default {
   },
   async created() {
     // captura os dados do modulo
-    if (this.$router.currentRoute.meta) {
+    if (this.$router.currentRoute.meta.model) {
       this.editorModel = this.$router.currentRoute.meta.model;
     }
     await this.requestData();
