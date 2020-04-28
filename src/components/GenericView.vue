@@ -21,7 +21,7 @@ import LoadingData from "@/components/LoadingData";
 
 export default {
   components: { GenericTable, LoadingData, GenericEditor },
-  name: "Usuarios",
+  name: "Generic",
   data: () => ({
     editorDialog: false,
     editorModel: {},

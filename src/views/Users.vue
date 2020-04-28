@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div>Usuarios</div>
     <v-btn @click="editorDialog = true">criar</v-btn>
-    <generic-table v-if="genericData.length > 0" :tableData="genericData" />
+    <generic-table v-if="genericData.length > 0" :tableData="genericData" @edit-item="editItem" />
     <Loading-data v-if="isLoading" />
     <p v-if="genericData.length == 0 && isLoading == false">Sem dados para mostrar no momento</p>
     <generic-editor
       v-if="editorDialog"
       apiUrlManual="/users"
+      :itemToUpdate="itemToUpdate"
       :isDialogOpen="editorDialog"
       :model="userModel"
       @close-dialog="closeDialog"
@@ -31,13 +31,22 @@ export default {
     genericData: []
   }),
   methods: {
+    async editItem(item) {
+      // recupera os dados daquele item especifico
+      // para enviar ao editor
+      let apiUrl = "/users";
+      let result = await this.$http.get(`${apiUrl}/${item.id}`);
+      if (result.status == 200) {
+        this.itemToUpdate = result.data;
+        this.editorDialog = true;
+      }
+    },
     async closeDialog(reload) {
       this.editorDialog = false;
       if (reload) {
-        console.log("nice");
-
         await this.requestData();
       }
+      this.itemToUpdate = undefined;
     },
     async requestData() {
       this.isLoading = true;
