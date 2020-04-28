@@ -25,7 +25,12 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-data-table :headers="headersSelected" :items="tableData" :search="search"></v-data-table>
+    <v-data-table
+      :headers="headersSelected"
+      :items="tableData"
+      :search="search"
+      @click:row="editItem"
+    ></v-data-table>
   </v-card>
 </template>
 <script>
@@ -68,6 +73,11 @@ export default {
       return { text: key, value: key };
     });
     this.headersAux = this.headers;
+  },
+  methods: {
+    editItem(item) {
+      this.$emit("edit-item", item);
+    }
   }
 };
 </script>

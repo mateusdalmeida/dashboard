@@ -2,8 +2,9 @@
   "blog": [
     {
       "id": 1,
-      "title": "json-server",
-      "text": "typicode"
+      "title": "json-server uou",
+      "text": "typicode",
+      "tag": "games"
     }
   ],
   "comments": [

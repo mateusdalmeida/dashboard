@@ -78,7 +78,7 @@
 <script>
 export default {
   name: "GenericEditor",
-  props: ["isDialogOpen", "model", "apiUrlManual"],
+  props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
   data: () => ({
     loading: false,
     datePickerMenu: false,
@@ -92,11 +92,25 @@ export default {
       } else {
         apiUrl = this.apiUrlManual;
       }
-      let result = await this.$http.post(apiUrl, this.modelAnswers);
-      if (result.status == 201) {
+      let result;
+      if (this.itemToUpdate) {
+        result = await this.$http.put(
+          `${apiUrl}/${this.itemToUpdate.id}`,
+          this.modelAnswers
+        );
+      } else {
+        result = await this.$http.post(apiUrl, this.modelAnswers);
+      }
+
+      if (result.status == 201 || result.status == 200) {
         // requisicao conseguiu cadastrar com sucesso, entao pode sair
         this.$emit("close-dialog", true);
       }
+    }
+  },
+  beforeMount() {
+    if (this.itemToUpdate) {
+      this.modelAnswers = JSON.parse(JSON.stringify(this.itemToUpdate));
     }
   }
 };
