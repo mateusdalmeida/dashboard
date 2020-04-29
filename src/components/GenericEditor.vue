@@ -2,7 +2,22 @@
   <div class="text-center">
     <v-dialog v-model="isDialogOpen" persistent max-width="600px">
       <v-card>
-        <v-card-title class="headline" primary-title>Criar/Editar {{$router.currentRoute.name}}</v-card-title>
+        <v-card-title>
+          <span v-if="!this.itemToUpdate" class="headline">Criar {{$router.currentRoute.name}}</span>
+          <span
+            v-if="this.itemToUpdate && !isEditing"
+            class="headline"
+          >Visualizar {{$router.currentRoute.name}}</span>
+          <span
+            v-if="this.itemToUpdate && isEditing"
+            class="headline"
+          >Editar {{$router.currentRoute.name}}</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="this.itemToUpdate" text color="primary" @click="isEditing = !isEditing">
+            Editar
+            <v-icon right>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-title>
         <v-card-text>
           <v-form>
             <v-row>
@@ -18,6 +33,7 @@
                   v-if="fieldType=='string'"
                   :label="fieldName"
                   v-model="modelAnswers[fieldName]"
+                  :disabled="!isEditing"
                 ></v-text-field>
 
                 <!-- depois é melhor transformar esse datepicker todo em um componente -->
@@ -30,6 +46,7 @@
                   >
                     <template v-slot:activator="{ on }">
                       <v-text-field
+                        :disabled="!isEditing"
                         readonly
                         :label="fieldName"
                         v-on="on"
@@ -48,10 +65,16 @@
                   v-if="fieldType=='boolean'"
                   :label="fieldName"
                   v-model="modelAnswers[fieldName]"
+                  :disabled="!isEditing"
                 ></v-checkbox>
                 <div v-if="fieldType['type']=='radio_btn'">
                   {{fieldName}}
-                  <v-radio-group v-model="modelAnswers[fieldName]" row name="asfsf">
+                  <v-radio-group
+                    v-model="modelAnswers[fieldName]"
+                    row
+                    name="asfsf"
+                    :disabled="!isEditing"
+                  >
                     <v-radio v-for="n in fieldType['items']" :key="n" :label="n" :value="n"></v-radio>
                   </v-radio-group>
                 </div>
@@ -64,8 +87,14 @@
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
           <!-- esse botao vai realizar outro emit, mas é coisa mais pra frente -->
-          <v-btn color="primary" text @click="createOrUpdate" :loading="loading">
-            Cadastrar/Atualizar
+          <v-btn
+            color="primary"
+            :disabled="!isEditing"
+            text
+            @click="createOrUpdate"
+            :loading="loading"
+          >
+            Salvar
             <template v-slot:loader>
               <v-progress-circular indeterminate></v-progress-circular>
             </template>
@@ -80,6 +109,7 @@ export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
   data: () => ({
+    isEditing: false,
     loading: false,
     datePickerMenu: false,
     modelAnswers: {}
@@ -111,6 +141,8 @@ export default {
   beforeMount() {
     if (this.itemToUpdate) {
       this.modelAnswers = JSON.parse(JSON.stringify(this.itemToUpdate));
+    } else {
+      this.isEditing = true;
     }
   }
 };
