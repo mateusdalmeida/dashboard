@@ -23,6 +23,9 @@
             hide-details
           ></v-text-field>
         </v-col>
+        <v-btn fab dark color="blue" small @click="createItem">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </v-row>
     </v-card-title>
     <v-data-table
@@ -77,6 +80,9 @@ export default {
   methods: {
     editItem(item) {
       this.$emit("edit-item", item);
+    },
+    createItem(item) {
+      this.$emit("create-item");
     }
   }
 };

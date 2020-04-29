@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-btn @click="editorDialog = true">criar</v-btn>
-    <generic-table v-if="genericData.length > 0" :tableData="genericData" @edit-item="editItem" />
+    <generic-table
+      v-if="genericData.length > 0"
+      :tableData="genericData"
+      @edit-item="editItem"
+      @create-item="createItem"
+    />
     <Loading-data v-if="isLoading" />
     <p v-if="genericData.length == 0 && isLoading == false">Sem dados para mostrar no momento</p>
     <generic-editor
@@ -31,6 +36,10 @@ export default {
     genericData: []
   }),
   methods: {
+    createItem() {
+      this.itemToUpdate = undefined;
+      this.editorDialog = true;
+    },
     async editItem(item) {
       // recupera os dados daquele item especifico
       // para enviar ao editor
