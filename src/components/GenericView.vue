@@ -1,6 +1,5 @@
 <template>
   <div>
-    <v-btn @click="editorDialog = true">criar</v-btn>
     <generic-table
       v-if="genericData.length > 0"
       :tableData="genericData"

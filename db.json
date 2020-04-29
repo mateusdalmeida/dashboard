@@ -22,6 +22,22 @@
       "nacionatity": "testelandia",
       "birthday": "2020-04-02",
       "type": false
+    },
+    {
+      "id": 2,
+      "name": "user de teste",
+      "email": "teste@tasd.com",
+      "nacionatity": "telandia",
+      "birthday": "2022-04-02",
+      "type": true
+    },
+    {
+      "name": "mateus ",
+      "email": "teste@teste.com",
+      "nacionatity": "br",
+      "birthday": "1996-02-29",
+      "type": true,
+      "id": 3
     }
   ],
   "profile": {

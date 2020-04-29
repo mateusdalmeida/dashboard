@@ -1,33 +1,32 @@
 <template>
   <v-card>
-    <v-card-title class="pt-0 pb-0">
-      <v-row>
-        <v-col>
-          <v-autocomplete
-            v-model="headersShown"
-            :items="headers"
-            label="Selecionar colunas para visualizar"
-            multiple
-            chips
-            small-chips
-            item-text="text"
-            item-value="text"
-          ></v-autocomplete>
-        </v-col>
-        <v-col>
-          <v-text-field
-            v-model="search"
-            append-icon="mdi-magnify"
-            label="Pesquisar"
-            single-line
-            hide-details
-          ></v-text-field>
-        </v-col>
-        <v-btn fab dark color="blue" small @click="createItem">
-          <v-icon>mdi-plus</v-icon>
+    <v-text-field
+      v-model="search"
+      prepend-inner-icon="mdi-magnify"
+      label="Pesquisar"
+      single-line
+      hide-details
+      filled
+    >
+      <template slot="append">
+        <v-btn color="primary" depressed x-large @click="createItem">
+          Novo
+          <v-icon right>mdi-plus</v-icon>
         </v-btn>
-      </v-row>
-    </v-card-title>
+      </template>
+    </v-text-field>
+    <v-autocomplete
+      v-model="headersShown"
+      :items="headers"
+      label="Selecionar colunas para visualizar"
+      hide-details
+      multiple
+      chips
+      filled
+      small-chips
+      item-text="text"
+      item-value="text"
+    ></v-autocomplete>
     <v-data-table
       :headers="headersSelected"
       :items="tableData"
@@ -39,7 +38,7 @@
 <script>
 export default {
   name: "GenericTable",
-  props: ["tableName", "tableData"],
+  props: ["tableName", "tableData", "isCrud"],
   data: () => ({
     routeName: "",
     search: "",
@@ -87,3 +86,12 @@ export default {
   }
 };
 </script>
+
+<style >
+.v-input__append-inner {
+  margin: 0 !important;
+}
+.v-input__slot {
+  padding-right: 0 !important;
+}
+</style>
