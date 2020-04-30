@@ -9,7 +9,7 @@
       filled
     >
       <template slot="append">
-        <v-btn color="primary" depressed x-large @click="createItem">
+        <v-btn color="primary" height="56px" x-large depressed @click="createItem">
           Novo
           <v-icon right>mdi-plus</v-icon>
         </v-btn>
