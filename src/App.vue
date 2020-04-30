@@ -13,7 +13,7 @@
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <div v-for="module in modulesShown" :key="module.to.path">
+        <div v-for="module in modulesShown" :key="module.to.name">
           <v-list-item :to="module.to">
             <v-list-item-content>
               <v-list-item-title>{{module.title}}</v-list-item-title>
@@ -40,7 +40,7 @@
     <!-- conteudo do app -->
     <v-content>
       <v-container fluid>
-        <router-view />
+        <router-view :key="$route.path" />
       </v-container>
     </v-content>
   </v-app>
