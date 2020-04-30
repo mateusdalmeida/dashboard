@@ -14,6 +14,12 @@ export var project_data = {
     LOGO: require('@/assets/logo.png')
 }
 
+// axios configuration
+export const http = axios.create({
+    baseURL: 'http://localhost:3000',
+    // timeout: 1000
+
+});
 
 //configurações do firebase
 var firebase_config = {
@@ -25,9 +31,3 @@ var feathers_config = {
     //não sei o que precisa aqui
 }
 
-// axios configuration
-const http = axios.create({
-    baseURL: 'http://localhost:3000',
-    timeout: 1000
-
-});

@@ -109,6 +109,8 @@
   </div>
 </template>
 <script>
+import { getItems, createItem, updateItem } from "@/services/requests";
+
 export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
@@ -129,15 +131,16 @@ export default {
       }
       let result;
       if (this.itemToUpdate) {
-        result = await this.$http.put(
-          `${apiUrl}/${this.itemToUpdate.id}`,
+        result = await updateItem(
+          apiUrl,
+          this.itemToUpdate.id,
           this.modelAnswers
         );
       } else {
-        result = await this.$http.post(apiUrl, this.modelAnswers);
+        result = await createItem(apiUrl, this.modelAnswers);
       }
 
-      if (result.status == 201 || result.status == 200) {
+      if (typeof result != "string") {
         // requisicao conseguiu cadastrar com sucesso, entao pode sair
         this.$emit("close-dialog", true);
       }
@@ -154,12 +157,12 @@ export default {
     // para cada field do tipo objeto realiza um get para o seu
     // endpoint na api (para pegar os valores)
     externalFields.forEach(async externalField => {
-      let result = await this.$http.get(`/${externalField[1].items.module}`);
-      if (result.status == 200) {
-        // atualiza a variavel externalFields com uma nova chave (o nome do field)
-        // e o array de itens obtido na requisicao
-        // a variavel external fields é utilizada dentro do v-for
-        this.$set(this.externalFields, externalField[0], result.data);
+      let result = await getItems(externalField[1].items.module);
+      // atualiza a variavel externalFields com uma nova chave (o nome do field)
+      // e o array de itens obtido na requisicao
+      // a variavel external fields é utilizada dentro do v-for
+      if (typeof result != "string") {
+        this.$set(this.externalFields, externalField[0], result);
       }
     });
 

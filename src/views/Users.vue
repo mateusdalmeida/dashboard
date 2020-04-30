@@ -1,13 +1,16 @@
 <template>
   <div>
     <generic-table
-      v-if="genericData.length > 0"
+      v-if="typeof genericData != 'string' && genericData.length > 0"
       :tableData="genericData"
       @edit-item="editItem"
       @create-item="createItem"
     />
     <Loading-data v-if="isLoading" />
-    <p v-if="genericData.length == 0 && isLoading == false">Sem dados para mostrar no momento</p>
+    <p
+      v-if="typeof genericData != 'string' && genericData.length == 0 && isLoading == false"
+    >Sem dados para mostrar no momento</p>
+    <p v-if="typeof genericData == 'string'">{{genericData}}</p>
     <generic-editor
       v-if="editorDialog"
       apiUrlManual="/users"
@@ -24,6 +27,7 @@ import GenericTable from "@/components/GenericTable";
 import GenericEditor from "@/components/GenericEditor";
 import LoadingData from "@/components/LoadingData";
 import modules from "@/config/modules";
+import { getItems, getItem } from "@/services/requests";
 
 export default {
   components: { GenericTable, LoadingData, GenericEditor },
@@ -43,9 +47,9 @@ export default {
       // recupera os dados daquele item especifico
       // para enviar ao editor
       let apiUrl = "/users";
-      let result = await this.$http.get(`${apiUrl}/${item.id}`);
-      if (result.status == 200) {
-        this.itemToUpdate = result.data;
+      let result = await getItem(apiUrl, item.id);
+      if (typeof result != "string") {
+        this.itemToUpdate = result;
         this.editorDialog = true;
       }
     },
@@ -62,10 +66,8 @@ export default {
       let apiUrl = "/users";
       // simula uma requisicao para o servidor e em seguida
       // preenche os dados do genericData
-      let result = await this.$http.get(apiUrl);
-      if (result.status == 200) {
-        this.genericData = result.data;
-      }
+      let result = await getItems(apiUrl);
+      this.genericData = result;
       this.isLoading = false;
     }
   },
