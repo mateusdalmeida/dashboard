@@ -42,30 +42,12 @@
                 ></v-text-field>
 
                 <!-- depois é melhor transformar esse datepicker todo em um componente -->
-                <div v-if="fieldType=='date'">
-                  <v-menu
-                    v-model="datePickerMenu"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    :top="$vuetify.breakpoint.smAndDown"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        :disabled="!isEditing"
-                        readonly
-                        :label="fieldName"
-                        v-on="on"
-                        :value="modelAnswers[fieldName]"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      @input="datePickerMenu = false"
-                      :label="fieldName"
-                      v-model="modelAnswers[fieldName]"
-                    ></v-date-picker>
-                  </v-menu>
-                </div>
-                <!-- fim do datepicker -->
+                <date-picker
+                  v-if="fieldType=='date'"
+                  v-model="modelAnswers[fieldName]"
+                  :isEditing="isEditing"
+                  :fieldName="fieldName"
+                />
                 <v-checkbox
                   v-if="fieldType=='boolean'"
                   :label="fieldName"
@@ -114,11 +96,13 @@
   </div>
 </template>
 <script>
+import DatePicker from "@/components/DatePicker";
 import { getItems, createItem, updateItem } from "@/services/requests";
 
 export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
+  components: { DatePicker },
   data: () => ({
     isEditing: false,
     loading: false,
