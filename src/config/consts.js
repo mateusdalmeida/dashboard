@@ -14,6 +14,7 @@ export const fields = {
 
 export const modules_types = {
     CRUD: "crud",
+    VIEW: "view",
     IMG_GALLERY: "img_gallery",
     CALENDAR: "calendar"
 }

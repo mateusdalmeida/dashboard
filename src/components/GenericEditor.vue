@@ -13,7 +13,12 @@
             class="headline"
           >Editar {{$router.currentRoute.name}}</span>
           <v-spacer></v-spacer>
-          <v-btn v-if="this.itemToUpdate" text color="primary" @click="isEditing = !isEditing">
+          <v-btn
+            v-if="this.itemToUpdate && modules_types != 'view'"
+            text
+            color="primary"
+            @click="isEditing = !isEditing"
+          >
             Editar
             <v-icon right>mdi-pencil</v-icon>
           </v-btn>
@@ -119,7 +124,8 @@ export default {
     loading: false,
     datePickerMenu: false,
     modelAnswers: {},
-    externalFields: {}
+    externalFields: {},
+    modules_types: ""
   }),
   methods: {
     async createOrUpdate() {
@@ -147,6 +153,10 @@ export default {
     }
   },
   beforeMount() {
+    // recupera qual o tipo de modulo
+    if (this.$router.currentRoute.meta.modules_types) {
+      this.modules_types = this.$router.currentRoute.meta.modules_types;
+    }
     // realiza uma verificacao para observar se algum dos fields
     // do model é um objeto e cria um array com esses objetos
     let externalFields = Object.entries(this.model).filter(e => {

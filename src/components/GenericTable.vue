@@ -8,7 +8,7 @@
       hide-details
       filled
     >
-      <template slot="append">
+      <template slot="append" v-if="modules_types != 'view'">
         <v-btn color="primary" height="56px" x-large depressed @click="createItem">
           Novo
           <v-icon right>mdi-plus</v-icon>
@@ -40,6 +40,7 @@ export default {
   name: "GenericTable",
   props: ["tableName", "tableData", "isCrud"],
   data: () => ({
+    modules_types: "",
     routeName: "",
     search: "",
     headersShown: [],
@@ -66,6 +67,10 @@ export default {
     // obtem o nome da rota atual para colocar no titulo
     // da tabela, caso nenhum titulo seja dado
     this.routeName = this.$router.currentRoute.name;
+    // recupera qual o tipo de modulo
+    if (this.$router.currentRoute.meta.modules_types) {
+      this.modules_types = this.$router.currentRoute.meta.modules_types;
+    }
     // converte as keys do primeiro objeto para
     // virarem os headers da tabela
     this.headers = Object.keys(this.tableData[0]).map(key => {

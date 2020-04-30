@@ -3,7 +3,7 @@ import { fields, modules_types } from "@/config/consts"
 export default {
     blog: {
         apiUrl: '/blog',
-        modules_types: modules_types.CRUD,
+        modules_types: modules_types.VIEW,
         auto_import: true,
         model: {
             title: fields.STRING,
