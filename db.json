@@ -36,5 +36,9 @@
   ],
   "profile": {
     "name": "typicode"
+  },
+  "auth": {
+    "email": "",
+    "senha": ""
   }
 }

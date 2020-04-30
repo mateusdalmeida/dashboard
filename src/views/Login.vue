@@ -60,10 +60,15 @@ export default {
   }),
   methods: {
     login() {
-      this.loading = true;
-      this.$router.push("/dash");
       if (this.$refs.form.validate()) {
       }
+      this.$store
+        .dispatch("auth/AUTH_REQUEST", this.formLogin)
+        .then(() => {
+          this.loading = true;
+          this.$router.push("/dash");
+        })
+        .catch(e => {});
     }
   }
 };

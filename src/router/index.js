@@ -1,13 +1,30 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '../views/Login.vue'
-import Dash from '../views/Dash.vue'
-import Users from '../views/Users.vue'
+import store from '@/store'
+import Login from '@/views/Login.vue'
+import Dash from '@/views/Dash.vue'
+import Users from '@/views/Users.vue'
 import GenericView from '@/components/GenericView'
 
 import modules from "@/config/modules"
 
 Vue.use(VueRouter)
+
+const ifNotAuthenticated = (to, from, next) => {
+  if (!store.getters['auth/isAuthenticated']) {
+    next()
+    return
+  }
+  next('/')
+}
+
+const ifAuthenticated = (to, from, next) => {
+  if (store.getters['auth/isAuthenticated']) {
+    next()
+    return
+  }
+  next('/login')
+}
 
 const routes = [
   { path: '*', redirect: '/' },
@@ -23,7 +40,8 @@ const routes = [
   {
     path: '/users',
     name: 'Usuarios',
-    component: Users
+    component: Users,
+    beforeEnter: ifAuthenticated
   },
 ]
 

@@ -3,11 +3,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import Config from './config/config'
+import Config, { http } from './config/config'
 
 Vue.config.productionTip = false
 
 Vue.use(Config)
+
+const token = localStorage.getItem('user-token')
+if (token) {
+  http.defaults.headers.common['Authorization'] = token
+}
 
 new Vue({
   router,
