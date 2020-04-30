@@ -67,7 +67,7 @@ export default {
   },
   created() {
     Object.entries(modules).forEach(module => {
-      if (module[1].auto_import) {
+      if (module[1].module_type != "custom") {
         let moduleName = `${module[0].charAt(0).toUpperCase() +
           module[0].slice(1)}`;
         this.modulesShown.push({

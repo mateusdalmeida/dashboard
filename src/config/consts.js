@@ -16,5 +16,6 @@ export const module_type = {
     CRUD: "crud",
     VIEW: "view",
     IMG_GALLERY: "img_gallery",
-    CALENDAR: "calendar"
+    CALENDAR: "calendar",
+    CUSTOM: "custom"
 }

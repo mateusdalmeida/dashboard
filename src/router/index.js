@@ -28,13 +28,15 @@ const routes = [
 ]
 
 Object.entries(modules).forEach(module => {
-  if (module[1].auto_import) {
-    routes.push({
-      path: `/${module[0]}`,
-      name: `${module[0].charAt(0).toUpperCase() + module[0].slice(1)}`,
-      component: GenericView,
-      meta: module[1]
-    })
+  if (module[1].module_type != "custom") {
+    if (module[1].module_type == "view" || module[1].module_type == "crud") {
+      routes.push({
+        path: `/${module[0]}`,
+        name: `${module[0].charAt(0).toUpperCase() + module[0].slice(1)}`,
+        component: GenericView,
+        meta: module[1]
+      })
+    }
   }
 
 })
