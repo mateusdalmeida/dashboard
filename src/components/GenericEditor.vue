@@ -69,13 +69,18 @@
                 ></v-checkbox>
                 <div v-if="fieldType['type']=='radio_btn'">
                   {{fieldName}}
-                  <v-radio-group
-                    v-model="modelAnswers[fieldName]"
-                    row
-                    name="asfsf"
-                    :disabled="!isEditing"
-                  >
-                    <v-radio v-for="n in fieldType['items']" :key="n" :label="n" :value="n"></v-radio>
+                  <v-radio-group v-model="modelAnswers[fieldName]" row :disabled="!isEditing">
+                    <!-- 
+                      existe um problema aqui: o title nesse caso em especifico existe, mas imagina
+                      se fosse uma lista de usuarios? aqui nao teria o title, mas algo tipo o username
+                      ou algo do tipo. Nao consegui pensar nessa solucao
+                    -->
+                    <v-radio
+                      v-for="n in externalFields[fieldName]"
+                      :key="n.title"
+                      :label="n.title"
+                      :value="n.title"
+                    ></v-radio>
                   </v-radio-group>
                 </div>
               </v-col>
@@ -86,7 +91,6 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
-          <!-- esse botao vai realizar outro emit, mas é coisa mais pra frente -->
           <v-btn
             color="primary"
             :disabled="!isEditing"
@@ -112,7 +116,8 @@ export default {
     isEditing: false,
     loading: false,
     datePickerMenu: false,
-    modelAnswers: {}
+    modelAnswers: {},
+    externalFields: {}
   }),
   methods: {
     async createOrUpdate() {
@@ -139,6 +144,25 @@ export default {
     }
   },
   beforeMount() {
+    // realiza uma verificacao para observar se algum dos fields
+    // do model é um objeto e cria um array com esses objetos
+    let externalFields = Object.entries(this.model).filter(e => {
+      if (typeof e[1] == "object") {
+        return e;
+      }
+    });
+    // para cada field do tipo objeto realiza um get para o seu
+    // endpoint na api (para pegar os valores)
+    externalFields.forEach(async externalField => {
+      let result = await this.$http.get(`/${externalField[1].items.module}`);
+      if (result.status == 200) {
+        // atualiza a variavel externalFields com uma nova chave (o nome do field)
+        // e o array de itens obtido na requisicao
+        // a variavel external fields é utilizada dentro do v-for
+        this.$set(this.externalFields, externalField[0], result.data);
+      }
+    });
+
     if (this.itemToUpdate) {
       this.modelAnswers = JSON.parse(JSON.stringify(this.itemToUpdate));
     } else {

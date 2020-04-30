@@ -10,10 +10,8 @@ export default {
             text: fields.STRING,
             tag: {
                 type: fields.RADIO_BTN,
-                items: [
-                    "games",
-                    "news"
-                ]
+                // as tags de um blog usam o module tags
+                items: fields.MODULE("tags")
             }
         }
     },
@@ -26,6 +24,14 @@ export default {
             nacionatity: fields.STRING,
             birthday: fields.DATE,
             type: fields.BOOLEAN,
+        }
+    },
+    tags: {
+        apiUrl: '/tags',
+        modules_types: modules_types.CRUD,
+        auto_import: true,
+        model: {
+            title: fields.STRING
         }
     }
 }
