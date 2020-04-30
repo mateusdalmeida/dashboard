@@ -1,5 +1,6 @@
 <template>
   <div>
+    TELA PERSONALIZADA
     <generic-table
       v-if="typeof genericData != 'string' && genericData.length > 0"
       :tableData="genericData"

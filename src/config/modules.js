@@ -4,7 +4,6 @@ export default {
     blog: {
         apiUrl: '/blog',
         module_type: module_type.VIEW,
-        auto_import: true,
         model: {
             title: fields.STRING,
             text: fields.STRING,
@@ -17,7 +16,7 @@ export default {
     },
     users: {
         apiUrl: '/users',
-        module_type: module_type.CRUD,
+        module_type: module_type.CUSTOM,
         model: {
             name: fields.STRING,
             email: fields.STRING,
@@ -29,7 +28,6 @@ export default {
     tags: {
         apiUrl: '/tags',
         module_type: module_type.CRUD,
-        auto_import: true,
         model: {
             title: fields.STRING
         }
