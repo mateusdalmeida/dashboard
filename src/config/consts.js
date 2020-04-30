@@ -12,7 +12,7 @@ export const fields = {
     }
 }
 
-export const modules_types = {
+export const module_type = {
     CRUD: "crud",
     VIEW: "view",
     IMG_GALLERY: "img_gallery",

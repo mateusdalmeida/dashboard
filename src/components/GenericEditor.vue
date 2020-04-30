@@ -14,7 +14,7 @@
           >Editar {{$router.currentRoute.name}}</span>
           <v-spacer></v-spacer>
           <v-btn
-            v-if="this.itemToUpdate && modules_types != 'view'"
+            v-if="this.itemToUpdate && module_type != 'view'"
             text
             color="primary"
             @click="isEditing = !isEditing"
@@ -125,7 +125,7 @@ export default {
     datePickerMenu: false,
     modelAnswers: {},
     externalFields: {},
-    modules_types: ""
+    module_type: ""
   }),
   methods: {
     async createOrUpdate() {
@@ -154,8 +154,8 @@ export default {
   },
   beforeMount() {
     // recupera qual o tipo de modulo
-    if (this.$router.currentRoute.meta.modules_types) {
-      this.modules_types = this.$router.currentRoute.meta.modules_types;
+    if (this.$router.currentRoute.meta.module_type) {
+      this.module_type = this.$router.currentRoute.meta.module_type;
     }
     // realiza uma verificacao para observar se algum dos fields
     // do model é um objeto e cria um array com esses objetos

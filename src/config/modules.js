@@ -1,9 +1,9 @@
-import { fields, modules_types } from "@/config/consts"
+import { fields, module_type } from "@/config/consts"
 
 export default {
     blog: {
         apiUrl: '/blog',
-        modules_types: modules_types.VIEW,
+        module_type: module_type.VIEW,
         auto_import: true,
         model: {
             title: fields.STRING,
@@ -17,7 +17,7 @@ export default {
     },
     users: {
         apiUrl: '/users',
-        modules_types: modules_types.CRUD,
+        module_type: module_type.CRUD,
         model: {
             name: fields.STRING,
             email: fields.STRING,
@@ -28,7 +28,7 @@ export default {
     },
     tags: {
         apiUrl: '/tags',
-        modules_types: modules_types.CRUD,
+        module_type: module_type.CRUD,
         auto_import: true,
         model: {
             title: fields.STRING
