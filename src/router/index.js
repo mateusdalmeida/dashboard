@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Dash from '../views/Dash.vue'
 import Users from '../views/Users.vue'
 import GenericView from '@/components/GenericView'
+import Gallery from '@/views/Gallery'
 
 import modules from "@/config/modules"
 
@@ -36,6 +37,9 @@ Object.entries(modules).forEach(module => {
     }
     if (module[1].module_type == "view" || module[1].module_type == "crud") {
       route['component'] = GenericView
+    }
+    if (module[1].module_type == "img_gallery") {
+      route['component'] = Gallery
     }
     routes.push(route)
   }

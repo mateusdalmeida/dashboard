@@ -31,5 +31,9 @@ export default {
         model: {
             title: fields.STRING
         }
+    },
+    gallery: {
+        apiUrl: '/gallery',
+        module_type: module_type.IMG_GALLERY,
     }
 }
