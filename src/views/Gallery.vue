@@ -1,5 +1,13 @@
 <template>
   <v-container>
+    <div v-if="isLoading">
+      <v-row>
+        <v-col sm="1">
+          <v-progress-circular indeterminate></v-progress-circular>
+        </v-col>
+        <v-col>Carregando dados...</v-col>
+      </v-row>
+    </div>
     <generic-gallery v-if="!isLoading" :photos="photos" />
   </v-container>
 </template>
