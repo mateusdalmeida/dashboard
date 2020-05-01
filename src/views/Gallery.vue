@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <generic-gallery :photos="photos" />
+    <generic-gallery v-if="!isLoading" :photos="photos" />
   </v-container>
 </template>
 
@@ -11,12 +11,14 @@ export default {
   name: "Gallery",
   components: { GenericGallery },
   data: () => ({
-    photos: []
+    photos: [],
+    isLoading: true
   }),
   methods: {},
   async created() {
     let result = await getItems("/gallery");
     this.photos = result;
+    this.isLoading = false;
   }
 };
 </script>
