@@ -88,5 +88,9 @@
       "url": "https://i.picsum.photos/id/102/432/324.jpg",
       "title": "image 5"
     }
-  ]
+  ],
+  "auth": {
+    "email": "",
+    "senha": ""
+  }
 }
