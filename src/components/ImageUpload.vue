@@ -10,7 +10,6 @@
               xs="12"
               sm="12"
               md="9"
-              id="file-drag-drop"
               ref="fileform"
               class="color: grey lighten-3"
               style="cursor: pointer"
@@ -24,14 +23,14 @@
                 type="file"
                 @change="onFilePicked"
               />
-              <span class="drop-files">Clique ou arraste as fotos aqui</span>
+              <span>Clique ou arraste as fotos aqui</span>
             </v-col>
           </v-row>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card-text class="pa-5 text-center" v-if="files.length == 0">Adicione novas imagens</v-card-text>
+        <v-card-text class="pa-5 text-center" v-if="images.length == 0">Adicione novas imagens</v-card-text>
         <v-row v-else no-gutters class="overflow-y-auto" style="max-height: 60vh">
-          <v-col class cols="12" v-for="(file, key) in files" :key="key" xs="12" sm="4" md="3">
+          <v-col class cols="12" v-for="(file, key) in images" :key="key" xs="12" sm="4" md="3">
             <v-card outlined class="ma-1">
               <v-img :aspect-ratio="16/9" v-bind:ref="'preview'+parseInt( key )"></v-img>
               <v-card-text class="pa-2">
@@ -62,21 +61,12 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
-          <!--<v-btn
-            color="primary"
-            :disabled="!isEditing"
-            text
-            @click="createOrUpdate"
-            :loading="loading"
-          >
-            Salvar
+          <v-btn color="primary" :disabled="!(images.length > 0)" text :loading="loading">
+            Fazer Uploud
+            <v-icon right>mdi-cloud-upload-outline</v-icon>
             <template v-slot:loader>
               <v-progress-circular indeterminate></v-progress-circular>
             </template>
-          </v-btn>-->
-          <v-btn text color="primary" :disabled="!(files.length > 0)">
-            Fazer Uploud
-            <v-icon right>mdi-cloud-upload-outline</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -90,7 +80,7 @@ export default {
   data: () => ({
     loading: false,
     dragAndDropCapable: false,
-    files: []
+    images: []
   }),
   methods: {
     determineDragAndDropCapable() {
@@ -103,8 +93,8 @@ export default {
       );
     },
     getImagePreviews() {
-      for (let i = 0; i < this.files.length; i++) {
-        if (/\.(jpe?g|png|gif)$/i.test(this.files[i].name)) {
+      for (let i = 0; i < this.images.length; i++) {
+        if (/\.(jpe?g|png|gif)$/i.test(this.images[i].name)) {
           let reader = new FileReader();
           reader.addEventListener(
             "load",
@@ -113,7 +103,7 @@ export default {
             }.bind(this),
             false
           );
-          reader.readAsDataURL(this.files[i]);
+          reader.readAsDataURL(this.images[i]);
         } else {
           this.$nextTick(function() {
             this.$refs["preview" + parseInt(i)][0].src = "/images/file.png";
@@ -122,11 +112,11 @@ export default {
       }
     },
     onFilePicked(e) {
-      this.files.push(...e.target.files);
+      this.images.push(...e.target.files);
       this.getImagePreviews();
     },
     removeFile(key) {
-      this.files.splice(key, 1);
+      this.images.splice(key, 1);
       this.getImagePreviews();
     },
     close() {
@@ -163,7 +153,7 @@ export default {
         function(e) {
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             if (e.dataTransfer.files[i].type.substring(0, 5) == "image") {
-              this.files.push(e.dataTransfer.files[i]);
+              this.images.push(e.dataTransfer.files[i]);
               this.getImagePreviews();
             }
           }
