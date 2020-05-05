@@ -5,7 +5,11 @@
         <v-card-title class="pa-0">
           <v-row class="text-center ma-0">
             <v-col cols="12" xs="12" sm="12" md="3">Upload de imagens</v-col>
+            <v-col v-if="loading" cols="12" xs="12" sm="12" md="9" class="color: grey lighten-3">
+              <span class="text--disabled">Clique ou arraste as fotos aqui</span>
+            </v-col>
             <v-col
+              v-else
               cols="12"
               xs="12"
               sm="12"
@@ -16,6 +20,7 @@
               @click="$refs.inputUpload.click()"
             >
               <input
+                :disabled="loading"
                 v-show="false"
                 ref="inputUpload"
                 accept="image/*"
@@ -35,6 +40,7 @@
               <v-img :aspect-ratio="16/9" v-bind:ref="'preview'+parseInt( key )"></v-img>
               <v-card-text class="pa-2">
                 <v-text-field
+                  :disabled="loading"
                   label="Descrição"
                   v-model="dataAux[key].name"
                   dense
@@ -43,6 +49,7 @@
                   prepend-icon="mdi-format-align-justify"
                 ></v-text-field>
                 <v-text-field
+                  :disabled="loading"
                   class="mt-2"
                   label="Data"
                   v-model="dataAux[key].date"
@@ -52,7 +59,7 @@
                   prepend-icon="mdi-calendar"
                 ></v-text-field>
               </v-card-text>
-              <v-btn color="red" text block @click="removeFile( key )">
+              <v-btn color="red" :disabled="loading" text block @click="removeFile( key )">
                 Remover
                 <v-icon rigth>mdi-delete-outline</v-icon>
               </v-btn>
@@ -63,8 +70,14 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
-          <v-btn color="primary" :disabled="!(images.length > 0)" text :loading="loading">
-            Fazer Uploud
+          <v-btn
+            color="primary"
+            @click="uploadFiles"
+            :disabled="!(images.length > 0)"
+            text
+            :loading="loading"
+          >
+            Fazer Upload
             <v-icon right>mdi-cloud-upload-outline</v-icon>
             <template v-slot:loader>
               <v-progress-circular indeterminate></v-progress-circular>
@@ -86,6 +99,15 @@ export default {
     dataAux: []
   }),
   methods: {
+    uploadFiles() {
+      this.loading = true;
+      console.log(this.images);
+      console.log(this.dataAux);
+      setTimeout(() => {
+        this.close();
+        this.loading = false;
+      }, 1000);
+    },
     determineDragAndDropCapable() {
       var div = document.createElement("div");
 
