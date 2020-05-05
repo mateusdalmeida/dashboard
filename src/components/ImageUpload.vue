@@ -14,7 +14,16 @@
               ref="fileform"
               class="pa-3 color: grey lighten-3"
               style="cursor: pointer"
+              @click="$refs.inputUpload.click()"
             >
+              <input
+                v-show="false"
+                ref="inputUpload"
+                accept="image/*"
+                multiple
+                type="file"
+                @change="onFilePicked"
+              />
               <span class="drop-files">Clique ou arraste as fotos aqui</span>
             </v-col>
           </v-row>
@@ -118,6 +127,10 @@ export default {
         }
       }
     },
+    onFilePicked(e) {
+      this.files.push(...e.target.files);
+      this.getImagePreviews();
+    },
     removeFile(key) {
       this.files.splice(key, 1);
       this.getImagePreviews();
@@ -154,7 +167,6 @@ export default {
       this.$refs.fileform.addEventListener(
         "drop",
         function(e) {
-          // console.log(e.dataTransfer.files);
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             if (e.dataTransfer.files[i].type.substring(0, 5) == "image") {
               this.files.push(e.dataTransfer.files[i]);
