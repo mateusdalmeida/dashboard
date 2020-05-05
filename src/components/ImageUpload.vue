@@ -36,6 +36,7 @@
               <v-card-text class="pa-2">
                 <v-text-field
                   label="Descrição"
+                  v-model="dataAux[key].name"
                   dense
                   outlined
                   hide-details
@@ -44,6 +45,7 @@
                 <v-text-field
                   class="mt-2"
                   label="Data"
+                  v-model="dataAux[key].date"
                   dense
                   outlined
                   hide-details
@@ -80,7 +82,8 @@ export default {
   data: () => ({
     loading: false,
     dragAndDropCapable: false,
-    images: []
+    images: [],
+    dataAux: []
   }),
   methods: {
     determineDragAndDropCapable() {
@@ -112,11 +115,20 @@ export default {
       }
     },
     onFilePicked(e) {
-      this.images.push(...e.target.files);
+      for (let index = 0; index < e.target.files.length; index++) {
+        this.images.push(e.target.files[index]);
+        this.dataAux.push({
+          name: e.target.files[index].name,
+          date: new Date(e.target.files[index].lastModified).toLocaleDateString(
+            "en-ca"
+          )
+        });
+      }
       this.getImagePreviews();
     },
     removeFile(key) {
       this.images.splice(key, 1);
+      this.dataAux.splice(key, 1);
       this.getImagePreviews();
     },
     close() {
@@ -154,6 +166,12 @@ export default {
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             if (e.dataTransfer.files[i].type.substring(0, 5) == "image") {
               this.images.push(e.dataTransfer.files[i]);
+              this.dataAux.push({
+                name: e.dataTransfer.files[i].name,
+                date: new Date(
+                  e.dataTransfer.files[i].lastModified
+                ).toLocaleDateString("en-ca")
+              });
               this.getImagePreviews();
             }
           }
@@ -165,13 +183,4 @@ export default {
 </script>
 
 <style>
-div.file-listing {
-  width: 400px;
-  margin: auto;
-  padding: 10px;
-}
-
-div.file-listing img {
-  height: 100px;
-}
 </style>
