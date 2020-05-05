@@ -97,19 +97,20 @@ export default {
     dragAndDropCapable: false,
     images: [],
     imagesPreview: [],
-    dataAux: [],
-    reader: new FileReader()
+    dataAux: []
   }),
-  created() {
-    this.reader.addEventListener(
-      "load",
-      function() {
-        this.imagesPreview.push(this.reader.result);
-      }.bind(this),
-      false
-    );
-  },
   methods: {
+    readAsDataURL(imageFile) {
+      let reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        function() {
+          this.imagesPreview.push(reader.result);
+        }.bind(this),
+        false
+      );
+      reader.readAsDataURL(imageFile);
+    },
     uploadFiles() {
       this.loading = true;
       console.log(this.images);
@@ -131,7 +132,7 @@ export default {
     onFilePicked(e) {
       for (let index = 0; index < e.target.files.length; index++) {
         this.images.push(e.target.files[index]);
-        this.reader.readAsDataURL(e.target.files[index]);
+        this.readAsDataURL(e.target.files[index]);
         this.dataAux.push({
           name: e.target.files[index].name,
           date: new Date(e.target.files[index].lastModified).toLocaleDateString(
@@ -180,7 +181,7 @@ export default {
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             if (e.dataTransfer.files[i].type.substring(0, 5) == "image") {
               this.images.push(e.dataTransfer.files[i]);
-              this.reader.readAsDataURL(e.dataTransfer.files[i]);
+              this.readAsDataURL(e.dataTransfer.files[i]);
               this.dataAux.push({
                 name: e.dataTransfer.files[i].name,
                 date: new Date(
