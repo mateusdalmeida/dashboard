@@ -1,10 +1,10 @@
 <template>
   <div class="text-center">
     <v-dialog v-model="isDialogOpen" persistent max-width="900px">
-      <v-card class="mb-3">
+      <v-card>
         <v-card-title class="pa-0">
-          <v-row class="text-center">
-            <v-col cols="12" xs="12" sm="12" md="3" class="pa-3">Upload de imagens</v-col>
+          <v-row class="text-center ma-0">
+            <v-col cols="12" xs="12" sm="12" md="3">Upload de imagens</v-col>
             <v-col
               cols="12"
               xs="12"
@@ -12,7 +12,7 @@
               md="9"
               id="file-drag-drop"
               ref="fileform"
-              class="pa-3 color: grey lighten-3"
+              class="color: grey lighten-3"
               style="cursor: pointer"
               @click="$refs.inputUpload.click()"
             >
@@ -28,7 +28,8 @@
             </v-col>
           </v-row>
         </v-card-title>
-        <v-card-text class="ma-5 pa-5 text-center" v-if="files.length == 0">Adicione novas imagens</v-card-text>
+        <v-divider></v-divider>
+        <v-card-text class="pa-5 text-center" v-if="files.length == 0">Adicione novas imagens</v-card-text>
         <v-row v-else no-gutters class="overflow-y-auto" style="max-height: 60vh">
           <v-col
             class="file-listing"
