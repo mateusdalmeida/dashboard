@@ -37,7 +37,7 @@
         <v-row v-else no-gutters class="overflow-y-auto" style="max-height: 60vh">
           <v-col class cols="12" v-for="(file, key) in images" :key="key" xs="12" sm="4" md="3">
             <v-card outlined class="ma-1">
-              <v-img :aspect-ratio="16/9" v-bind:ref="'preview'+parseInt( key )"></v-img>
+              <v-img :aspect-ratio="16/9" :src="imagesPreview[key]"></v-img>
               <v-card-text class="pa-2">
                 <v-text-field
                   :disabled="loading"
@@ -96,8 +96,19 @@ export default {
     loading: false,
     dragAndDropCapable: false,
     images: [],
-    dataAux: []
+    imagesPreview: [],
+    dataAux: [],
+    reader: new FileReader()
   }),
+  created() {
+    this.reader.addEventListener(
+      "load",
+      function() {
+        this.imagesPreview.push(this.reader.result);
+      }.bind(this),
+      false
+    );
+  },
   methods: {
     uploadFiles() {
       this.loading = true;
@@ -117,28 +128,10 @@ export default {
         "FileReader" in window
       );
     },
-    getImagePreviews() {
-      for (let i = 0; i < this.images.length; i++) {
-        if (/\.(jpe?g|png|gif)$/i.test(this.images[i].name)) {
-          let reader = new FileReader();
-          reader.addEventListener(
-            "load",
-            function() {
-              this.$refs["preview" + parseInt(i)][0].src = reader.result;
-            }.bind(this),
-            false
-          );
-          reader.readAsDataURL(this.images[i]);
-        } else {
-          this.$nextTick(function() {
-            this.$refs["preview" + parseInt(i)][0].src = "/images/file.png";
-          });
-        }
-      }
-    },
     onFilePicked(e) {
       for (let index = 0; index < e.target.files.length; index++) {
         this.images.push(e.target.files[index]);
+        this.reader.readAsDataURL(e.target.files[index]);
         this.dataAux.push({
           name: e.target.files[index].name,
           date: new Date(e.target.files[index].lastModified).toLocaleDateString(
@@ -146,12 +139,11 @@ export default {
           )
         });
       }
-      this.getImagePreviews();
     },
     removeFile(key) {
       this.images.splice(key, 1);
+      this.imagesPreview.splice(key, 1);
       this.dataAux.splice(key, 1);
-      this.getImagePreviews();
     },
     close() {
       this.$emit("close-dialog", true);
@@ -188,13 +180,13 @@ export default {
           for (let i = 0; i < e.dataTransfer.files.length; i++) {
             if (e.dataTransfer.files[i].type.substring(0, 5) == "image") {
               this.images.push(e.dataTransfer.files[i]);
+              this.reader.readAsDataURL(e.dataTransfer.files[i]);
               this.dataAux.push({
                 name: e.dataTransfer.files[i].name,
                 date: new Date(
                   e.dataTransfer.files[i].lastModified
                 ).toLocaleDateString("en-ca")
               });
-              this.getImagePreviews();
             }
           }
         }.bind(this)
