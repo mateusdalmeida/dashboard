@@ -31,37 +31,30 @@
         <v-divider></v-divider>
         <v-card-text class="pa-5 text-center" v-if="files.length == 0">Adicione novas imagens</v-card-text>
         <v-row v-else no-gutters class="overflow-y-auto" style="max-height: 60vh">
-          <v-col
-            class="file-listing"
-            cols="12"
-            v-for="(file, key) in files"
-            :key="key"
-            xs="12"
-            sm="4"
-            md="3"
-          >
+          <v-col class cols="12" v-for="(file, key) in files" :key="key" xs="12" sm="4" md="3">
             <v-card outlined class="ma-1">
-              <v-card-title>
-                <v-card flat>
-                  <img class="preview" v-bind:ref="'preview'+parseInt( key )" />
-                </v-card>
-                <v-spacer />
-                <v-btn class="mb-2" icon @click="removeFile( key )">
-                  <v-icon>mdi-delete-outline</v-icon>
-                </v-btn>
-              </v-card-title>
-              <v-row class="ml-2 mr-2 mb-2" no-gutters>
-                <v-col>
-                  <v-text-field
-                    label="Descrição"
-                    dense
-                    outlined
-                    hide-details
-                    class="mb-3"
-                    prepend-icon="mdi-format-align-justify"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
+              <v-img :aspect-ratio="16/9" v-bind:ref="'preview'+parseInt( key )"></v-img>
+              <v-card-text class="pa-2">
+                <v-text-field
+                  label="Descrição"
+                  dense
+                  outlined
+                  hide-details
+                  prepend-icon="mdi-format-align-justify"
+                ></v-text-field>
+                <v-text-field
+                  class="mt-2"
+                  label="Data"
+                  dense
+                  outlined
+                  hide-details
+                  prepend-icon="mdi-calendar"
+                ></v-text-field>
+              </v-card-text>
+              <v-btn color="red" text block @click="removeFile( key )">
+                Remover
+                <v-icon rigth>mdi-delete-outline</v-icon>
+              </v-btn>
             </v-card>
           </v-col>
         </v-row>
