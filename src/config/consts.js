@@ -5,6 +5,7 @@ export const fields = {
     DATE: "date",
     BOOLEAN: "boolean",
     RADIO_BTN: "radio_btn",
+    IMG_PICKER: "img_picker",
     // retorna um objeto com a key module e o valor 
     // é o nome do modulo
     MODULE: function module(moduleName) {
