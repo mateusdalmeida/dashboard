@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="imageUploadDialog = true">Adicionar imagens</v-btn>
       </v-card-title>
-      <generic-gallery v-if="!isLoading" :photos="photos" :type="'input'" />
+      <generic-gallery :type="'input'" />
     </v-card>
     <image-upload
       v-if="imageUploadDialog"
@@ -24,19 +24,12 @@ export default {
   name: "Gallery",
   components: { GenericGallery, ImageUpload },
   data: () => ({
-    photos: [],
-    isLoading: true,
     imageUploadDialog: false
   }),
   methods: {
     closeDialog() {
       this.imageUploadDialog = false;
     }
-  },
-  async created() {
-    let result = await getItems("/gallery");
-    this.photos = result;
-    this.isLoading = false;
   }
 };
 </script>
