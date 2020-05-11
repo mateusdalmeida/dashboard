@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="imageUploadDialog = true">Adicionar imagens</v-btn>
       </v-card-title>
-      <generic-gallery :type="'input'" />
+      <generic-gallery :type="'gallery'" />
     </v-card>
     <image-upload
       v-if="imageUploadDialog"
