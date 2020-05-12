@@ -51,3 +51,16 @@ export const updateItem = async function (url, id, itemData) {
         return result
     }
 }
+
+export const deleteItem = async function (url, id, itemData) {
+    let result
+    try {
+        result = await http.delete(`${url}/${id}`)
+        if (result.status == 201 || result.status == 200) {
+            return result.data
+        }
+    } catch (error) {
+        result = 'Problema ao atualizar item, tente novamente.'
+        return result
+    }
+}

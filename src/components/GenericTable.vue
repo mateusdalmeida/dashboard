@@ -28,11 +28,14 @@
       item-value="text"
     ></v-autocomplete>
     <v-data-table
+      show-select
+      v-model="selectedItems"
       :headers="headersSelected"
       :items="tableData"
       :search="search"
       @click:row="editItem"
     ></v-data-table>
+    <v-btn color="primary" v-if="realSelectedItems.length > 0" @click="deleteItems">Deletar items</v-btn>
   </v-card>
 </template>
 <script>
@@ -43,6 +46,7 @@ export default {
     module_type: "",
     routeName: "",
     search: "",
+    selectedItems: [],
     headersShown: [],
     headersAux: [],
     headers: [
@@ -61,6 +65,9 @@ export default {
       return this.headers.filter(header => {
         return this.headersShown.includes(header.text);
       });
+    },
+    realSelectedItems: function(){
+      return this.tableData.filter(value => -1 !== this.selectedItems.indexOf(value))
     }
   },
   created() {
@@ -87,6 +94,9 @@ export default {
     },
     createItem(item) {
       this.$emit("create-item");
+    },
+    deleteItems(){
+      this.$emit("delete-item", this.selectedItems)
     }
   }
 };
