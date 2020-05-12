@@ -35,7 +35,7 @@
       :search="search"
       @click:row="editItem"
     ></v-data-table>
-    <v-btn color="primary" v-if="realSelectedItems.length > 0" @click="deleteItems">Deletar items</v-btn>
+    <v-btn color="primary" v-if="realSelectedItems.length > 0" @click="deleteItem">Deletar items</v-btn>
   </v-card>
 </template>
 <script>
@@ -95,7 +95,7 @@ export default {
     createItem(item) {
       this.$emit("create-item");
     },
-    deleteItems(){
+    deleteItem(){
       this.$emit("delete-item", this.selectedItems)
     }
   }

@@ -28,11 +28,11 @@
   </div>
 </template>
 <script>
-import { removeItem } from "@/services/requests";
+import { deleteItem } from "@/services/requests";
 
 export default {
   name: "GenericRemover",
-  props: ["isDialogOpen", "model", "apiUrlManual", "itemsToRemove"],
+  props: ["isDialogOpen", "apiUrlManual", "itemsToRemove"],
   data: () => ({
     loading: false,
   }),
@@ -46,7 +46,7 @@ export default {
       }
       let result;
       this.itemsToRemove.forEach(async item => {
-        result = await removeItem(apiUrl, item.id)
+        result = await deleteItem(apiUrl, item.id)
       });
 
       if (typeof result != "string") {
