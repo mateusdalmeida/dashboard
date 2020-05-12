@@ -6,6 +6,7 @@
       :tableData="genericData"
       @edit-item="editItem"
       @create-item="createItem"
+      @delete-item="deleteItem"
     />
     <Loading-data v-if="isLoading" />
     <p
@@ -20,26 +21,40 @@
       :model="userModel"
       @close-dialog="closeDialog"
     />
+    <generic-remover 
+      v-if="removerDialog" 
+      apiUrlManual="/users"
+      :itemsToRemove="itemsToRemove" 
+      :isDialogOpen="removerDialog"
+      @close-dialog="closeDialog"
+    />
   </div>
 </template>
 
 <script>
 import GenericTable from "@/components/GenericTable";
 import GenericEditor from "@/components/GenericEditor";
+import GenericRemover from "@/components/GenericRemover";
 import LoadingData from "@/components/LoadingData";
 import modules from "@/config/modules";
 import { getItems, getItem } from "@/services/requests";
 
 export default {
-  components: { GenericTable, LoadingData, GenericEditor },
+  components: { GenericTable, LoadingData, GenericEditor, GenericRemover },
   name: "Usuarios",
   data: () => ({
     editorDialog: false,
+    removerDialog: false,
+    itemsToRemove: undefined,
     userModel: modules.users.model,
     isLoading: false,
     genericData: []
   }),
   methods: {
+    deleteItem(items){
+      this.itemsToRemove = items;
+      this.removerDialog = true;
+    },
     createItem() {
       this.itemToUpdate = undefined;
       this.editorDialog = true;
@@ -56,6 +71,7 @@ export default {
     },
     async closeDialog(reload) {
       this.editorDialog = false;
+      this.removerDialog = false;
       if (reload) {
         await this.requestData();
       }
