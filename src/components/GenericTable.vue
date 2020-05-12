@@ -28,8 +28,8 @@
       item-value="text"
     ></v-autocomplete>
     <v-data-table
-      show-select
       v-model="selectedItems"
+      :show-select="module_type != 'view'"
       :headers="headersSelected"
       :items="tableData"
       :search="search"

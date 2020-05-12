@@ -6,6 +6,7 @@
           <span class="headline">Remover {{$router.currentRoute.name}}</span>
         </v-card-title>
         <v-card-text>
+          Algo pra colocar aqui
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
