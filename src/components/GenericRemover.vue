@@ -1,28 +1,23 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="isDialogOpen" persistent max-width="600px">
+  <div>
+    <v-dialog v-model="isDialogOpen" persistent max-width="300px">
       <v-card>
         <v-card-title>
-          <span class="headline">Remover {{$router.currentRoute.name}}</span>
+          <v-spacer></v-spacer>
+          <span class="headline">Excluir {{$router.currentRoute.name}}</span>
+          <v-spacer></v-spacer>
         </v-card-title>
-        <v-card-text>
-          Algo pra colocar aqui
-        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
-          <v-btn
-            color="primary"
-            text
-            @click="removeItems"
-            :loading="loading"
-          >
-            Salvar
+          <v-btn color="primary" text @click="removeItems" :loading="loading">
+            Excluir
             <template v-slot:loader>
               <v-progress-circular indeterminate></v-progress-circular>
             </template>
           </v-btn>
+          <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -35,7 +30,7 @@ export default {
   name: "GenericRemover",
   props: ["isDialogOpen", "apiUrlManual", "itemsToRemove"],
   data: () => ({
-    loading: false,
+    loading: false
   }),
   methods: {
     async removeItems() {
@@ -47,7 +42,7 @@ export default {
       }
       let result;
       this.itemsToRemove.forEach(async item => {
-        result = await deleteItem(apiUrl, item.id)
+        result = await deleteItem(apiUrl, item.id);
       });
 
       if (typeof result != "string") {

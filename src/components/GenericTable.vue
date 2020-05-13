@@ -34,8 +34,17 @@
       :items="displayItems"
       :search="search"
       @click:row="editItem"
-    ></v-data-table>
-    <v-btn color="primary" v-if="realSelectedItems.length > 0" @click="deleteItem">Deletar items</v-btn>
+    >
+      <template v-if="realSelectedItems.length > 0" v-slot:footer>
+        <v-btn
+          block
+          elevation="0"
+          large
+          color="primary"
+          @click="deleteItem"
+        >{{realSelectedItems.length == 1? "Deletar item" : "Deletar Itens"}}</v-btn>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 <script>
