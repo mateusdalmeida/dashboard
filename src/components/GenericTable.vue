@@ -66,8 +66,10 @@ export default {
         return this.headersShown.includes(header.text);
       });
     },
-    realSelectedItems: function(){
-      return this.tableData.filter(value => -1 !== this.selectedItems.indexOf(value))
+    realSelectedItems: function() {
+      return this.tableData.filter(
+        value => -1 !== this.selectedItems.indexOf(value)
+      );
     }
   },
   created() {
@@ -95,8 +97,8 @@ export default {
     createItem(item) {
       this.$emit("create-item");
     },
-    deleteItem(){
-      this.$emit("delete-item", this.selectedItems)
+    deleteItem() {
+      this.$emit("delete-item", this.realSelectedItems);
     }
   }
 };
