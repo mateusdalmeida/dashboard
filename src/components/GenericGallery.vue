@@ -54,7 +54,7 @@ export default {
       console.log("remove");
     },
     select(image) {
-      console.log(image);
+      this.$emit("selectedimage", image);
     }
   },
   async created() {

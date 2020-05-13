@@ -27,7 +27,12 @@
   "tags": [
     {
       "id": 1,
-      "title": "games"
+      "title": "games",
+      "image": {
+        "upload_date": "2020-01-02",
+        "url": "https://i.picsum.photos/id/102/432/324.jpg",
+        "title": "image 5"
+      }
     },
     {
       "title": "news",
