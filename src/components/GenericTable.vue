@@ -31,7 +31,7 @@
       v-model="selectedItems"
       :show-select="module_type != 'view'"
       :headers="headersSelected"
-      :items="tableData"
+      :items="displayItems"
       :search="search"
       @click:row="editItem"
     ></v-data-table>
@@ -70,6 +70,13 @@ export default {
       return this.tableData.filter(
         value => -1 !== this.selectedItems.indexOf(value)
       );
+    },
+    displayItems: function() {
+      let itemsAux = [];
+      this.tableData.forEach(element => {
+        itemsAux.push(element);
+      });
+      return itemsAux;
     }
   },
   created() {
