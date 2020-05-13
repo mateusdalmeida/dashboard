@@ -29,7 +29,8 @@ export default {
         apiUrl: '/tags',
         module_type: module_type.CRUD,
         model: {
-            title: fields.STRING
+            title: fields.STRING,
+            image: fields.IMG_PICKER
         }
     },
     gallery: {

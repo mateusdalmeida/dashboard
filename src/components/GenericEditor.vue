@@ -48,6 +48,28 @@
                   :isEditing="isEditing"
                   :fieldName="fieldName"
                 />
+
+                <v-col v-if="fieldType=='img_picker'">
+                  <v-card flat v-if="modelAnswers[fieldName]">
+                    <v-img :src="modelAnswers[fieldName]['url']"></v-img>
+                  </v-card>
+                  <v-btn :disabled="!isEditing" text color="primary" @click="dialog = true" block>
+                    {{modelAnswers[fieldName] ? "Trocar" : 'Selecionar'}}
+                    <v-icon right>mdi-camera</v-icon>
+                  </v-btn>
+                  <v-dialog v-model="dialog" max-width="600px">
+                    <v-card>
+                      <v-card-title>Selecione uma imagem</v-card-title>
+                      <div class="overflow-y-auto" style="max-height: 60vh">
+                        <generic-gallery
+                          @selectedimage="imagepicker($event, fieldName)"
+                          :type="'input'"
+                        />
+                      </div>
+                    </v-card>
+                  </v-dialog>
+                </v-col>
+
                 <v-checkbox
                   v-if="fieldType=='boolean'"
                   :label="fieldName"
@@ -96,22 +118,28 @@
   </div>
 </template>
 <script>
+import GenericGallery from "@/components/GenericGallery";
 import DatePicker from "@/components/DatePicker";
 import { getItems, createItem, updateItem } from "@/services/requests";
 
 export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
-  components: { DatePicker },
+  components: { DatePicker, GenericGallery },
   data: () => ({
     isEditing: false,
     loading: false,
     datePickerMenu: false,
     modelAnswers: {},
     externalFields: {},
-    module_type: ""
+    module_type: "",
+    dialog: false
   }),
   methods: {
+    imagepicker(file, fieldName) {
+      this.modelAnswers[fieldName] = file;
+      this.dialog = false;
+    },
     async createOrUpdate() {
       let apiUrl;
       if (this.$router.currentRoute.meta.apiUrl) {
