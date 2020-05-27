@@ -5,8 +5,17 @@
         <v-card-title class="pa-0">
           <v-row class="text-center ma-0">
             <v-col cols="12" xs="12" sm="12" md="3">Upload de imagens</v-col>
-            <v-col v-if="loading" cols="12" xs="12" sm="12" md="9" class="color: grey lighten-3">
-              <span class="text--disabled">Clique ou arraste as fotos aqui</span>
+            <v-col
+              v-if="loading"
+              cols="12"
+              xs="12"
+              sm="12"
+              md="9"
+              class="color: grey lighten-3"
+            >
+              <span class="text--disabled"
+                >Clique ou arraste as fotos aqui</span
+              >
             </v-col>
             <v-col
               v-else
@@ -33,11 +42,26 @@
           </v-row>
         </v-card-title>
         <v-divider></v-divider>
-        <v-card-text class="pa-5 text-center" v-if="images.length == 0">Adicione novas imagens</v-card-text>
-        <v-row v-else no-gutters class="overflow-y-auto" style="max-height: 60vh">
-          <v-col class cols="12" v-for="(file, key) in images" :key="key" xs="12" sm="4" md="3">
+        <v-card-text class="pa-5 text-center" v-if="images.length == 0"
+          >Adicione novas imagens</v-card-text
+        >
+        <v-row
+          v-else
+          no-gutters
+          class="overflow-y-auto"
+          style="max-height: 60vh"
+        >
+          <v-col
+            class
+            cols="12"
+            v-for="(file, key) in images"
+            :key="key"
+            xs="12"
+            sm="4"
+            md="3"
+          >
             <v-card outlined class="ma-1">
-              <v-img :aspect-ratio="16/9" :src="imagesPreview[key]"></v-img>
+              <v-img :aspect-ratio="16 / 9" :src="imagesPreview[key]"></v-img>
               <v-card-text class="pa-2">
                 <v-text-field
                   :disabled="loading"
@@ -59,7 +83,13 @@
                   prepend-icon="mdi-calendar"
                 ></v-text-field>
               </v-card-text>
-              <v-btn color="red" :disabled="loading" text block @click="removeFile( key )">
+              <v-btn
+                color="red"
+                :disabled="loading"
+                text
+                block
+                @click="removeFile(key)"
+              >
                 Remover
                 <v-icon rigth>mdi-delete-outline</v-icon>
               </v-btn>
@@ -69,7 +99,13 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red" text @click="$emit('close-dialog')" :disabled="loading">Cancelar</v-btn>
+          <v-btn
+            color="red"
+            text
+            @click="$emit('close-dialog')"
+            :disabled="loading"
+            >Cancelar</v-btn
+          >
           <v-btn
             color="primary"
             @click="uploadFiles"
@@ -89,6 +125,9 @@
   </div>
 </template>
 <script>
+import { saveImages } from "@/services/requests";
+import { imgToBase64 } from "@/services/utils";
+
 export default {
   name: "ImageUpload",
   props: ["isDialogOpen"],
@@ -97,7 +136,7 @@ export default {
     dragAndDropCapable: false,
     images: [],
     imagesPreview: [],
-    dataAux: []
+    dataAux: [],
   }),
   methods: {
     readAsDataURL(imageFile) {
@@ -111,14 +150,29 @@ export default {
       );
       reader.readAsDataURL(imageFile);
     },
-    uploadFiles() {
-      this.loading = true;
-      console.log(this.images);
-      console.log(this.dataAux);
-      setTimeout(() => {
+    async uploadFiles() {
+      let apiUrl;
+      if (this.$router.currentRoute.meta.apiUrl) {
+        apiUrl = this.$router.currentRoute.meta.apiUrl;
+      } else {
+        apiUrl = this.apiUrlManual;
+      }
+      this.loading = true;      
+      let imgsBase64 = [];
+      for (let index = 0; index < this.images.length; index++) {
+        let imgBase64 = await imgToBase64(this.images[index]);
+        imgsBase64.push({
+          img: imgBase64,
+          name: this.dataAux[index].name,
+          date: this.dataAux[index].date,
+        });
+      }    
+      let result = await saveImages(apiUrl, imgsBase64);      
+      if (typeof result != "string") {
+        // requisicao conseguiu cadastrar com sucesso, entao pode sair
         this.close();
-        this.loading = false;
-      }, 1000);
+      }
+      this.loading = false;
     },
     determineDragAndDropCapable() {
       var div = document.createElement("div");
@@ -137,7 +191,7 @@ export default {
           name: e.target.files[index].name,
           date: new Date(e.target.files[index].lastModified).toLocaleDateString(
             "en-ca"
-          )
+          ),
         });
       }
     },
@@ -148,7 +202,7 @@ export default {
     },
     close() {
       this.$emit("close-dialog", true);
-    }
+    },
   },
   mounted() {
     this.dragAndDropCapable = this.determineDragAndDropCapable();
@@ -161,7 +215,7 @@ export default {
         "dragover",
         "dragenter",
         "dragleave",
-        "drop"
+        "drop",
       ].forEach(
         function(evt) {
           this.$refs.fileform.addEventListener(
@@ -186,16 +240,15 @@ export default {
                 name: e.dataTransfer.files[i].name,
                 date: new Date(
                   e.dataTransfer.files[i].lastModified
-                ).toLocaleDateString("en-ca")
+                ).toLocaleDateString("en-ca"),
               });
             }
           }
         }.bind(this)
       );
     }
-  }
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

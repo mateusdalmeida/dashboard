@@ -3,7 +3,7 @@ import { fields, module_type } from "@/config/consts"
 export default {
     blog: {
         apiUrl: '/blog',
-        module_type: module_type.VIEW,
+        module_type: module_type.CRUD,
         model: {
             title: fields.STRING,
             text: fields.STRING,
@@ -27,7 +27,7 @@ export default {
     },
     tags: {
         apiUrl: '/tags',
-        module_type: module_type.CRUD,
+        module_type: module_type.VIEW,
         model: {
             title: fields.STRING,
             image: fields.IMG_PICKER

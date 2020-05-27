@@ -9,7 +9,13 @@
       filled
     >
       <template slot="append" v-if="module_type != 'view'">
-        <v-btn color="primary" height="56px" x-large depressed @click="createItem">
+        <v-btn
+          color="primary"
+          height="56px"
+          x-large
+          depressed
+          @click="createItem"
+        >
           Novo
           <v-icon right>mdi-plus</v-icon>
         </v-btn>
@@ -36,22 +42,31 @@
       @click:row="editItem"
     >
       <template v-if="realSelectedItems.length > 0" v-slot:footer>
-        <v-btn
-          block
-          elevation="0"
-          large
-          color="primary"
-          @click="deleteItem"
-        >{{realSelectedItems.length == 1? "Deletar item" : "Deletar Itens"}}</v-btn>
+        <v-btn block elevation="0" large color="primary" @click="deleteItem">{{
+          realSelectedItems.length == 1 ? "Deletar item" : "Deletar Itens"
+        }}</v-btn>
       </template>
     </v-data-table>
+    <!-- <editor
+      v-model="richTextField"
+      :init="{
+        language: 'pt_BR',
+        plugins: ['lists link image paste help wordcount'],
+      }"
+    />
+    {{ richTextField }} -->
   </v-card>
 </template>
 <script>
+// import Editor from "@tinymce/tinymce-vue";
 export default {
   name: "GenericTable",
   props: ["tableName", "tableData", "isCrud"],
+  // components: {
+  //   editor: Editor,
+  // },
   data: () => ({
+    richTextField: "",
     module_type: "",
     routeName: "",
     search: "",
@@ -63,30 +78,30 @@ export default {
         text: "Dessert (100g serving)",
         align: "start",
         sortable: false,
-        value: "name"
-      }
-    ]
+        value: "name",
+      },
+    ],
   }),
   computed: {
     headersSelected: function() {
       // um computed que monitora quais colunas devem ser
       // exibidas de acordo com o valor do array headersShow
-      return this.headers.filter(header => {
+      return this.headers.filter((header) => {
         return this.headersShown.includes(header.text);
       });
     },
     realSelectedItems: function() {
       return this.tableData.filter(
-        value => -1 !== this.selectedItems.indexOf(value)
+        (value) => -1 !== this.selectedItems.indexOf(value)
       );
     },
     displayItems: function() {
       let itemsAux = [];
-      this.tableData.forEach(element => {
+      this.tableData.forEach((element) => {
         itemsAux.push(element);
       });
       return itemsAux;
-    }
+    },
   },
   created() {
     // obtem o nome da rota atual para colocar no titulo
@@ -98,7 +113,7 @@ export default {
     }
     // converte as keys do primeiro objeto para
     // virarem os headers da tabela
-    this.headers = Object.keys(this.tableData[0]).map(key => {
+    this.headers = Object.keys(this.tableData[0]).map((key) => {
       // adiciona o item no array headersShow, responsavel
       // pelo menu de selecao do que aparece nos headers
       this.headersShown.push(key);
@@ -115,12 +130,12 @@ export default {
     },
     deleteItem() {
       this.$emit("delete-item", this.realSelectedItems);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style >
+<style>
 .v-input__append-inner {
   margin: 0 !important;
 }

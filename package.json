@@ -8,7 +8,9 @@
     "json": "json-server --watch db.json"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^3.2.2",
     "axios": "^0.19.2",
+    "tinymce": "^5.3.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vuetify": "^2.2.11",
