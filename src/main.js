@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-import Config, { http } from './config/config'
+import Config, { http, project_data } from './config/config'
+import firebase from "./config/firebaseConfig";
 
 Vue.config.productionTip = false
 
@@ -14,9 +15,24 @@ if (token) {
   http.defaults.headers.common['Authorization'] = token
 }
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: function (h) { return h(App) }
-}).$mount('#app')
+if (project_data.USE_FIREBASE) {
+  let app = ''
+  firebase.auth().onAuthStateChanged(() => {
+    if (!app) {
+      app = new Vue({
+        router,
+        store,
+        vuetify,
+        render: function (h) { return h(App) }
+      }).$mount('#app')
+    }
+  })
+} else {
+  new Vue({
+    router,
+    store,
+    vuetify,
+    render: function (h) { return h(App) }
+  }).$mount('#app')
+}
+

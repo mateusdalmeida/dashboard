@@ -27,7 +27,6 @@
         ></v-text-field>
         <span v-if="errorMessage">{{errorMessage}}</span>
         <v-btn
-          type="submit"
           rounded
           color="primary"
           block
@@ -62,13 +61,8 @@ export default {
     login() {
       if (this.$refs.form.validate()) {
       }
-      this.$store
-        .dispatch("auth/AUTH_REQUEST", this.formLogin)
-        .then(() => {
-          this.loading = true;
-          this.$router.push("/dash");
-        })
-        .catch(e => {});
+      this.loading = true;
+      this.$store.dispatch("LOGIN", this.formLogin);
     }
   }
 };
