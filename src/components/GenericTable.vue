@@ -47,24 +47,17 @@
         }}</v-btn>
       </template>
     </v-data-table>
-    <!-- <editor
-      v-model="richTextField"
-      :init="{
-        language: 'pt_BR',
-        plugins: ['lists link image paste help wordcount'],
-      }"
-    />
-    {{ richTextField }} -->
+    <editor v-model="richTextField" />
   </v-card>
 </template>
 <script>
-// import Editor from "@tinymce/tinymce-vue";
+import TipTap from "@/components/TipTap";
 export default {
   name: "GenericTable",
   props: ["tableName", "tableData", "isCrud"],
-  // components: {
-  //   editor: Editor,
-  // },
+  components: {
+    editor: TipTap,
+  },
   data: () => ({
     richTextField: "",
     module_type: "",
