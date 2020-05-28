@@ -24,7 +24,6 @@ export default {
   },
   methods: {
     onSelectedImage(image) {
-      console.log(image);
       this.$emit("select-file", { src: image.img, alt: image.name });
     },
   },

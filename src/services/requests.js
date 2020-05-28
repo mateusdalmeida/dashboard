@@ -1,10 +1,20 @@
 import { http } from "@/config/config";
 
-export const getItems = async function(url) {
+export const getItems = async function(url, urlParams) {
   let result;
   try {
-    result = await http.get(url);
+    if (urlParams) {
+      result = await http.get(`${url}?${urlParams}`);
+    } else {
+      result = await http.get(url);
+    }
     if (result.status == 200) {
+      if (urlParams) {
+        return {
+          data: result.data,
+          total_items: result.headers["x-total-count"],
+        };
+      }
       return result.data;
     }
   } catch (error) {

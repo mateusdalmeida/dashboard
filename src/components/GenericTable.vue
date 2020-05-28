@@ -35,11 +35,13 @@
     ></v-autocomplete>
     <v-data-table
       v-model="selectedItems"
+      :server-items-length="parseInt(totalItems)"
       :show-select="module_type != 'view'"
       :headers="headersSelected"
       :items="displayItems"
       :search="search"
       @click:row="editItem"
+      @update:options="updatePagination"
     >
       <template v-if="realSelectedItems.length > 0" v-slot:footer>
         <v-btn block elevation="0" large color="primary" @click="deleteItem">{{
@@ -52,11 +54,13 @@
 <script>
 export default {
   name: "GenericTable",
-  props: ["tableName", "tableData", "isCrud"],
+  props: ["tableName", "tableData", "isCrud", "totalItems"],
   data: () => ({
     module_type: "",
     routeName: "",
     search: "",
+    options: {},
+    firstLoading: true,
     selectedItems: [],
     headersShown: [],
     headersAux: [],
@@ -69,6 +73,26 @@ export default {
       },
     ],
   }),
+  watch: {
+    search: function() {
+      this.$emit("table-pagination", {
+        search: this.search,
+        ...this.options,
+      });
+    },
+    tableData: function() {
+      if (this.tableData.length > 0) {
+        this.headersShown = [];
+        this.headers = Object.keys(this.tableData[0]).map((key) => {
+          // adiciona o item no array headersShow, responsavel
+          // pelo menu de selecao do que aparece nos headers
+          this.headersShown.push(key);
+          return { text: key, value: key };
+        });
+        this.headersAux = this.headers;
+      }
+    },
+  },
   computed: {
     headersSelected: function() {
       // um computed que monitora quais colunas devem ser
@@ -100,13 +124,6 @@ export default {
     }
     // converte as keys do primeiro objeto para
     // virarem os headers da tabela
-    this.headers = Object.keys(this.tableData[0]).map((key) => {
-      // adiciona o item no array headersShow, responsavel
-      // pelo menu de selecao do que aparece nos headers
-      this.headersShown.push(key);
-      return { text: key, value: key };
-    });
-    this.headersAux = this.headers;
   },
   methods: {
     editItem(item) {
@@ -117,6 +134,16 @@ export default {
     },
     deleteItem() {
       this.$emit("delete-item", this.realSelectedItems);
+    },
+    updatePagination(options) {
+      if (!this.firstLoading) {
+        this.options = options;
+        this.$emit("table-pagination", {
+          search: this.search,
+          ...this.options,
+        });
+      }
+      this.firstLoading = false;
     },
   },
 };

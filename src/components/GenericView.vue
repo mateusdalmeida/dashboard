@@ -1,17 +1,15 @@
 <template>
   <div>
     <generic-table
-      v-if="typeof genericData != 'string' && genericData.length > 0"
       :tableData="genericData"
+      :totalItems="totalItems"
       @edit-item="editItem"
       @create-item="createItem"
       @delete-item="deleteItem"
+      @table-pagination="tablePagination"
     />
     <Loading-data v-if="isLoading" />
-    <p
-      v-if="typeof genericData != 'string' && genericData.length == 0 && isLoading == false"
-    >Sem dados para mostrar no momento</p>
-    <p v-if="typeof genericData == 'string'">{{genericData}}</p>
+    <p v-if="typeof genericData == 'string'">{{ genericData }}</p>
     <generic-editor
       v-if="editorDialog"
       :itemToUpdate="itemToUpdate"
@@ -19,9 +17,9 @@
       :model="editorModel"
       @close-dialog="closeDialog"
     />
-    <generic-remover 
-      v-if="removerDialog" 
-      :itemsToRemove="itemsToRemove" 
+    <generic-remover
+      v-if="removerDialog"
+      :itemsToRemove="itemsToRemove"
       :isDialogOpen="removerDialog"
       @close-dialog="closeDialog"
     />
@@ -45,17 +43,21 @@ export default {
     removerDialog: false,
     itemsToRemove: undefined,
     isLoading: false,
+    totalItems: 0,
     genericData: [],
-    apiUrl: ""
+    apiUrl: "",
   }),
   methods: {
-    deleteItem(items){
+    deleteItem(items) {
       this.itemsToRemove = items;
       this.removerDialog = true;
     },
     createItem() {
       this.itemToUpdate = undefined;
       this.editorDialog = true;
+    },
+    tablePagination(options) {
+      this.requestData(options);
     },
     async editItem(item) {
       // recupera os dados daquele item especifico
@@ -74,14 +76,29 @@ export default {
       }
       this.itemToUpdate = undefined;
     },
-    async requestData() {
+    async requestData(options) {
       this.isLoading = true;
+      let result;
+
+      if (options) {
+        const { page, sortBy, sortDesc, itemsPerPage, search } = options;
+        result = await getItems(
+          this.apiUrl,
+          `_page=${page}&_limit=${
+            itemsPerPage ? itemsPerPage : 10
+          }&_sort=${sortBy}&_order=${sortDesc ? "desc" : "asc"}&q=${
+            search ? search : ""
+          }`
+        );
+      } else {
+        result = await getItems(this.apiUrl, "_page=1");
+      }
+      this.genericData = result.data;
+      this.totalItems = result.total_items;
       // simula uma requisicao para o servidor e em seguida
       // preenche os dados do genericData
-      let result = await getItems(this.apiUrl);
-      this.genericData = result;
       this.isLoading = false;
-    }
+    },
   },
   async created() {
     // captura os dados do modulo
@@ -90,6 +107,6 @@ export default {
       this.editorModel = this.$router.currentRoute.meta.model;
     }
     await this.requestData();
-  }
+  },
 };
 </script>
