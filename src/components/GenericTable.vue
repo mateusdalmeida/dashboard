@@ -47,19 +47,13 @@
         }}</v-btn>
       </template>
     </v-data-table>
-    <editor v-model="richTextField" />
   </v-card>
 </template>
 <script>
-import TipTap from "@/components/TipTap";
 export default {
   name: "GenericTable",
   props: ["tableName", "tableData", "isCrud"],
-  components: {
-    editor: TipTap,
-  },
   data: () => ({
-    richTextField: "",
     module_type: "",
     routeName: "",
     search: "",
