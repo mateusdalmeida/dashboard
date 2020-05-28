@@ -72,16 +72,14 @@
                   hide-details
                   prepend-icon="mdi-format-align-justify"
                 ></v-text-field>
-                <v-text-field
+                <date-picker
                   :disabled="loading"
+                  :isEditing="true"
                   class="mt-2"
-                  label="Data"
+                  fieldName="Data"
                   v-model="dataAux[key].date"
-                  dense
-                  outlined
-                  hide-details
-                  prepend-icon="mdi-calendar"
-                ></v-text-field>
+                  prependIcon="mdi-calendar"
+                />
               </v-card-text>
               <v-btn
                 color="red"
@@ -125,12 +123,16 @@
   </div>
 </template>
 <script>
+import DatePicker from "@/components/DatePicker";
 import { saveImages } from "@/services/requests";
 import { imgToBase64 } from "@/services/utils";
 
 export default {
   name: "ImageUpload",
   props: ["isDialogOpen"],
+  components: {
+    DatePicker,
+  },
   data: () => ({
     loading: false,
     dragAndDropCapable: false,
@@ -157,7 +159,7 @@ export default {
       } else {
         apiUrl = this.apiUrlManual;
       }
-      this.loading = true;      
+      this.loading = true;
       let imgsBase64 = [];
       for (let index = 0; index < this.images.length; index++) {
         let imgBase64 = await imgToBase64(this.images[index]);
@@ -166,8 +168,8 @@ export default {
           name: this.dataAux[index].name,
           date: this.dataAux[index].date,
         });
-      }    
-      let result = await saveImages(apiUrl, imgsBase64);      
+      }
+      let result = await saveImages(apiUrl, imgsBase64);
       if (typeof result != "string") {
         // requisicao conseguiu cadastrar com sucesso, entao pode sair
         this.close();

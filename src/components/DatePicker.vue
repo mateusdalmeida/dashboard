@@ -13,24 +13,32 @@
           :label="fieldName"
           v-on="on"
           :value="selectedDate"
+          dense
+          outlined
+          hide-details
+          :prepend-icon="prependIcon ? prependIcon : ''"
         ></v-text-field>
       </template>
-      <v-date-picker @input="selectDate" :label="fieldName" v-model="selectedDate"></v-date-picker>
+      <v-date-picker
+        @input="selectDate"
+        :label="fieldName"
+        v-model="selectedDate"
+      ></v-date-picker>
     </v-menu>
   </div>
 </template>
 <script>
 export default {
-  props: ["fieldName", "isEditing"],
+  props: ["fieldName", "isEditing", "prependIcon"],
   data: () => ({
     datePickerMenu: false,
-    selectedDate: ""
+    selectedDate: "",
   }),
   methods: {
     selectDate() {
       this.datePickerMenu = false;
       this.$emit("input", this.selectedDate);
-    }
-  }
+    },
+  },
 };
 </script>
