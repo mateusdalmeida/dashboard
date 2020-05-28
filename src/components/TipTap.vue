@@ -1,8 +1,10 @@
 <template>
   <div>
+    <p v-if="label">{{ label }}</p>
     <editor
       @input="input"
-      v-model="richText"
+      v-model="content"
+      :disabled="disabled"
       :extensions="extensions"
       :native-extensions="nativeExtensions"
     />
@@ -35,9 +37,15 @@ export default {
   components: {
     editor: TiptapVuetify,
   },
+  props: ["label", "contentToUpdate", "disabled"],
+  created() {
+    if (this.contentToUpdate) {
+      this.content = this.contentToUpdate;
+    }
+  },
   data() {
     return {
-      richText: "",
+      content: "",
       extensions: [
         History,
         [
@@ -84,7 +92,7 @@ export default {
   },
   methods: {
     input() {
-      this.$emit("input", this.richText);
+      this.$emit("input", this.content);
     },
   },
 };

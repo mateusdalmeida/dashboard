@@ -29,11 +29,26 @@
               <v-col
                 cols="12"
                 sm="12"
-                :md="fieldType['type'] == 'radio_btn' ? '12' : '4'"
+                :md="
+                  fieldType['type'] == 'radio_btn' || fieldType == 'richtext'
+                    ? '12'
+                    : '4'
+                "
                 v-for="(fieldType, fieldName) in model"
                 :key="fieldName"
                 :order="fieldType['type'] == 'radio_btn' ? 'last' : ''"
               >
+                <editor
+                  v-if="fieldType == 'richtext'"
+                  v-model="modelAnswers[fieldName]"
+                  :disabled="!isEditing"
+                  :label="fieldName"
+                  :contentToUpdate="
+                    modelAnswers[fieldName]
+                      ? modelAnswers[fieldName].toString()
+                      : ''
+                  "
+                />
                 <v-text-field
                   v-if="fieldType == 'string'"
                   :label="fieldName"
@@ -86,7 +101,6 @@
                   :disabled="!isEditing"
                 ></v-checkbox>
                 <div v-if="fieldType['type'] == 'radio_btn'">
-                  {{ fieldName }}
                   <v-radio-group
                     v-model="modelAnswers[fieldName]"
                     row
@@ -137,6 +151,7 @@
   </div>
 </template>
 <script>
+import TipTap from "@/components/TipTap";
 import GenericGallery from "@/components/GenericGallery";
 import DatePicker from "@/components/DatePicker";
 import { getItems, createItem, updateItem } from "@/services/requests";
@@ -144,7 +159,7 @@ import { getItems, createItem, updateItem } from "@/services/requests";
 export default {
   name: "GenericEditor",
   props: ["isDialogOpen", "model", "apiUrlManual", "itemToUpdate"],
-  components: { DatePicker, GenericGallery },
+  components: { DatePicker, GenericGallery, editor: TipTap },
   data: () => ({
     isEditing: false,
     loading: false,
