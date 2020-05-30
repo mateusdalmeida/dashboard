@@ -30,7 +30,9 @@
                 cols="12"
                 sm="12"
                 :md="
-                  fieldType['type'] == 'radio_btn' || fieldType == 'richtext'
+                  fieldType['type'] == 'radio_btn' ||
+                  fieldType['type'] == 'multiple' ||
+                  fieldType == 'richtext'
                     ? '12'
                     : '4'
                 "
@@ -59,13 +61,44 @@
                   :disabled="!isEditing"
                 ></v-text-field>
 
-                <!-- depois é melhor transformar esse datepicker todo em um componente -->
                 <date-picker
                   v-if="fieldType == 'date'"
                   v-model="modelAnswers[fieldName]"
                   :isEditing="isEditing"
                   :fieldName="fieldName"
                 />
+
+                <div v-if="fieldType['type'] == 'multiple'">
+                  <!-- aqui vai ser a div responsável pelos items multiplos -->
+                  <!-- {{ model[fieldName]["items"] }} -->
+                  {{ fieldName }}
+                  <v-btn
+                    :disabled="!isEditing"
+                    @click="addToMultipleField(fieldName)"
+                    ><v-icon>mdi-plus</v-icon></v-btn
+                  >
+                  <v-container>
+                    <v-row
+                      class="mt-1"
+                      v-for="(item, index) in modelAnswers[fieldName]"
+                      :key="index"
+                    >
+                      <v-text-field
+                        dense
+                        outlined
+                        hide-details
+                        v-model="modelAnswers[fieldName][index]"
+                        :disabled="!isEditing"
+                      ></v-text-field>
+                      <!-- regra para pelo menos um multiple :disabled="modelAnswers[fieldName].length == 1" -->
+                      <v-btn
+                        :disabled="!isEditing"
+                        @click="removeFromMultipleField(fieldName, index)"
+                        ><v-icon>mdi-trash-can</v-icon></v-btn
+                      >
+                    </v-row>
+                  </v-container>
+                </div>
 
                 <v-col v-if="fieldType == 'img_picker'">
                   <v-card flat v-if="modelAnswers[fieldName]">
@@ -174,6 +207,26 @@ export default {
       this.modelAnswers[fieldName] = file;
       this.dialog = false;
     },
+    addToMultipleField(fieldName) {
+      let fieldType = this.model[fieldName]["items"];
+      if (!this.modelAnswers[fieldName]) {
+        this.$set(this.modelAnswers, fieldName, []);
+      }
+      switch (fieldType) {
+        case "string":
+          this.modelAnswers[fieldName].push("");
+          break;
+        default:
+          this.modelAnswers[fieldName].push({});
+          break;
+      }
+    },
+    removeFromMultipleField(fieldName, index) {
+      this.modelAnswers[fieldName].splice(index, 1);
+      if (this.modelAnswers[fieldName].length == 0) {
+        delete this.modelAnswers[fieldName];
+      }
+    },
     async createOrUpdate() {
       let apiUrl;
       if (this.$router.currentRoute.meta.apiUrl) {
@@ -213,12 +266,17 @@ export default {
     // para cada field do tipo objeto realiza um get para o seu
     // endpoint na api (para pegar os valores)
     externalFields.forEach(async (externalField) => {
-      let result = await getItems(externalField[1].items.module);
-      // atualiza a variavel externalFields com uma nova chave (o nome do field)
-      // e o array de itens obtido na requisicao
-      // a variavel external fields é utilizada dentro do v-for
-      if (typeof result != "string") {
-        this.$set(this.externalFields, externalField[0], result);
+      // verifica se o external field possui module
+      if (externalField[1].items.module) {
+        let result = await getItems(externalField[1].items.module);
+        // atualiza a variavel externalFields com uma nova chave (o nome do field)
+        // e o array de itens obtido na requisicao
+        // a variavel external fields é utilizada dentro do v-for
+        if (typeof result != "string") {
+          this.$set(this.externalFields, externalField[0], result);
+        }
+      } else {
+        this.$set(this.externalFields, externalField[0], externalField[1]);
       }
     });
 

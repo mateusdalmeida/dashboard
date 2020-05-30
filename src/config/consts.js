@@ -7,6 +7,7 @@ export const fields = {
   RADIO_BTN: "radio_btn",
   IMG_PICKER: "img_picker",
   RICHTEXT: "richtext",
+  MULTIPLE: "multiple",
   // retorna um objeto com a key module e o valor
   // é o nome do modulo
   MODULE: function module(moduleName) {

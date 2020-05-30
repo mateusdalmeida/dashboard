@@ -1,16 +1,14 @@
 {
   "blog": [
     {
-      "id": 1,
-      "title": "json-server uou",
-      "text": "<p>typicode 2</p>",
-      "tag": "games"
-    },
-    {
-      "tag": "asdsd1",
-      "title": "teste",
       "text": "<p>that is awesome</p><pre><code>var a = 1</code></pre>",
-      "id": 2
+      "title": "teste",
+      "multi": [
+        "uooou",
+        "mutiple"
+      ],
+      "tag": "asdsd2",
+      "id": 3
     }
   ],
   "comments": [

@@ -12,6 +12,10 @@ export default {
         // as tags de um blog usam o module tags
         items: fields.MODULE("tags"),
       },
+      multi: {
+        type: fields.MULTIPLE,
+        items: fields.STRING,
+      },
     },
   },
   users: {
