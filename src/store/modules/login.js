@@ -41,6 +41,14 @@ export default {
                     commit('LOGIN_ERROR', err.message)
                 })
             }
+        },
+        LOGOUT: ({ dispatch }) => {
+            if (project_data.USE_FIREBASE) {
+                dispatch("firebase/FIREBASE_LOGOUT")
+            } else {
+                dispatch("auth/AUTH_LOGOUT")
+            }
+            router.push("/")
         }
     },
 }

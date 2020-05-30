@@ -12,7 +12,7 @@ export var project_data = {
     NAME: "Dash Generica",
     COLOR: "#a8008c",
     LOGO: require('@/assets/logo.png'),
-    USE_FIREBASE: true
+    USE_FIREBASE: false
 }
 
 // axios configuration
