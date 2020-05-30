@@ -5,5 +5,5 @@ import modules from "@/store/modules.js"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules
+  modules: modules,
 })
