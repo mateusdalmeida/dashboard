@@ -12,28 +12,27 @@
           v-model="formLogin.email"
           label="Email"
           required
-          :disabled="loading"
+          :disabled="$store.state.login.isLoading"
           solo
           rounded
         ></v-text-field>
         <v-text-field
           type="password"
           v-model="formLogin.senha"
-          :disabled="loading"
+          :disabled="$store.state.login.isLoading"
           label="Senha"
           required
           solo
           rounded
         ></v-text-field>
-        <span v-if="errorMessage">{{errorMessage}}</span>
         <v-btn
           rounded
           color="primary"
           block
           x-large
           dark
-          :disabled="loading"
-          :loading="loading"
+          :disabled="$store.state.login.isLoading"
+          :loading="$store.state.login.isLoading"
           @click="login()"
         >
           Entrar
@@ -41,6 +40,10 @@
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
           </template>
         </v-btn>
+        <p
+          class="text-center mt-3 red--text"
+          v-if="$store.state.login.loginError"
+        >{{$store.state.login.loginError}}</p>
       </v-form>
     </v-col>
   </v-row>
@@ -53,16 +56,13 @@ export default {
     formLogin: {
       email: "",
       senha: ""
-    },
-    errorMessage: null,
-    loading: false
+    }
   }),
   methods: {
     login() {
       if (this.$refs.form.validate()) {
+        this.$store.dispatch("login/LOGIN", this.formLogin);
       }
-      this.loading = true;
-      this.$store.dispatch("LOGIN", this.formLogin);
     }
   }
 };
